@@ -1,0 +1,100 @@
+ana_grid.F:#  if defined MASKING || defined NHMG_MASKING
+get_bry.F:#    ifdef NHMG_WBRY_ZERO
+get_bry.F:#    ifdef NHMG_WBRY_ZERO
+get_bry.F:#    ifdef NHMG_WBRY_ZERO
+get_bry.F:#    ifdef NHMG_WBRY_ZERO
+init_arrays.F:# ifdef NHMG
+main.F:#ifdef NHMG
+main.F:#ifdef NHMG
+main.F:# if defined NHMG
+main.F:!  Allocate NHMG grids
+main.F:#ifdef NHMG
+main.F:!  Set NHMG horizontal and vertical grids 
+main.F:#ifdef NHMG
+main.F:#ifdef  NHMG
+main.F:#ifdef NHMG  
+pre_step3d.F:#  ifndef NHMG
+pre_step3d.F:#  ifndef NHMG
+pre_step3d.F:#ifdef NHMG
+pre_step3d.F:#  ifndef NHMG
+pre_step3d.F:# ifdef NHMG
+pre_step3d.F:# ifdef NHMG
+pre_step3d.F:# endif /* NHMG */
+pre_step3d.F:# if defined NBQ || defined NHMG
+pre_step3d.F:# ifdef NHMG
+pre_step3d.F:# ifdef NHMG_DOUBLE_PROJ
+pre_step3d.F:# if defined NHMG_MASKING
+pre_step3d.F:# if defined NHMG_MASKING
+pre_step3d.F:# if defined NHMG_MASKING
+pre_step3d.F:# endif /* NHMG */
+pre_step3d.F:#  if defined NBQ || defined NHMG
+prsgrd.F:# ifdef NHMG
+prsgrd.F:# ifdef NHMG
+prsgrd.F:# ifdef NHMG
+prsgrd.F:# ifdef NHMG
+prsgrd.F:# ifdef NHMG
+prsgrd.F:#  ifdef NHMG
+prsgrd.F:# ifdef NHMG
+rhs3d.F:# ifdef NHMG
+rhs3d.F:# ifdef NHMG
+rhs3d.F:# ifdef NHMG
+rhs3d.F:# if defined UV_COR & defined NHMG
+rhs3d_w_nh.F:#if defined SOLVE3D && (defined NBQ || defined NHMG)
+rhs3d_w_nh.F:# ifdef NHMG
+rhs3d_w_nh.F:# ifdef NHMG
+rhs3d_w_nh.F:# ifdef NHMG
+rhs3d_w_nh.F:# if defined NHMG && defined UV_ADV
+rhs3d_w_nh.F:#endif /* SOLVE3D && NBQ || NHMG */       
+set_depth.F:#ifdef NHMG
+set_depth.F:#endif /* NHMG */
+set_depth.F:# ifdef NHMG
+set_depth.F:# endif /* NHMG */
+set_depth.F:# if defined NHMG && !defined NO_SPLIT
+set_depth.F:# endif /* NHMG */
+setup_grid1.F:#if defined MASKING || defined NHMG_MASKING
+setup_grid1.F:#if defined MASKING || defined NHMG_MASKING
+setup_grid1.F:# if defined MASKING || defined NHMG_MASKING
+step2d.F:# ifdef NHMG_2D_DAMPING
+step2d.F:#if defined MASKING || defined NHMG_MASKING
+step2d.F:#if defined MASKING || defined NHMG_MASKING
+step2d.F:# if defined MASKING || defined NHMG_MASKING
+step2d.F:# if defined MASKING || defined NHMG_MASKING
+step3d_uv1.F:#ifdef NHMG
+step3d_uv1.F:#ifdef NHMG
+step3d_uv1.F:#ifdef NHMG
+step3d_uv1.F:# if defined NHMG
+step3d_uv1.F:# endif /* NHMG */
+step3d_uv2.F:#ifdef NHMG
+step3d_uv2.F:# ifdef NHMG
+step3d_uv2.F:# ifndef NHMG
+step3d_uv2.F:# ifndef NHMG
+step3d_uv2.F:# ifdef NHMG
+step3d_uv2.F:        write(*,*)"DIAGNOSTICS_UV and NHMG cpp keys are incompatible"
+step3d_uv2.F:# endif  /* NHMG */
+step3d_uv2.F:# if defined NHMG
+step3d_uv2.F:# ifdef NHMG
+step3d_uv2.F:#  if defined NHMG_MASKING
+step3d_uv2.F:# endif    /* NHMG */
+step3d_uv2.F:# if defined NHMG
+step3d_uv2.F:        write(*,*)"PSOURCE and NHMG cpp keys are incompatible"
+step3d_uv2.F:# if defined NHMG
+step3d_uv2.F:        write(*,*)"M3NUDGING and NHMG cpp keys are incompatible"
+step3d_uv2.F:# ifdef NHMG
+step3d_uv2.F:# endif /* NHMG */
+step3d_w.F:#if defined SOLVE3D && (defined NBQ || defined NHMG)
+step.F:# if defined NBQ || defined NHMG
+step.F:#ifdef NHMG
+step.F:# if defined NHMG
+step.F:# ifdef NHMG
+step.F:# if defined NBQ || defined NHMG
+step.F:#ifdef  NHMG
+testkeys.F:#ifdef NHMG
+testkeys.F:NHMGISDEFINED
+uv3dmix_S.F:#if defined NBQ || defined NHMG
+uv3dmix_S.F:#endif /* NHMG */
+uv3dmix_spg.F:# if defined NBQ || defined NHMG
+w3dbc.F:# if defined NBQ || defined NHMG
+w3dbc.F:# endif /* NBQ, NHMG */
+w3dbc.F:# if defined NBQ || defined NHMG
+w3dbc.F:#if defined NBQ || defined NHMG
+wrt_his.F:#if defined NBQ || defined NHMG

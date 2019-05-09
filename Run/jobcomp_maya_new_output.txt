@@ -1,0 +1,1306 @@
+SOURCE IS: ../OCEAN
+OPERATING SYSTEM IS: Linux
+
+**************************
+** Copy SOURCE codes... **
+**************************
+/bin/cp: cannot stat '../OCEAN/*.h90': No such file or directory
+/bin/cp: cannot stat '../OCEAN/PISCES/namelist_pisces*': No such file or directory
+  file namelist_pisces copied from source directory
+/bin/cp: cannot stat '*.F90': No such file or directory
+/bin/cp: cannot stat '*.h90': No such file or directory
+/bin/cp: cannot stat 'Make*': No such file or directory
+
+******************************
+** Checking COMPILEAGRIF... **
+******************************
+
+****************************
+** Checking COMPILEMPI... **
+****************************
+ => MPI activated
+
+****************************
+** Checking COMPILENBQ... **
+****************************
+
+*****************************
+** Checking COMPILENHMG... **
+*****************************
+=> NHMG key is activated in cppdefs.h file
+NHMGPATH: /home/ngrima/CROCO-NH
+oexit: --disable-libunwind-exceptions
+0
+Configure NHMG: TRUE
+Compile NHMG: TRUE
+
+*****************************
+** Checking COMPILEXIOS... **
+*****************************
+
+******************************
+** Checking COMPILEOASIS... **
+******************************
+
+Compiling  mpc tool...
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mpc.F > mpc_.f
+mpif90 -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include  -o mpc mpc_.f
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+
+************************
+** NHMG configuration **
+************************
+  - prefix: , /home/ngrima/CROCO-NH
+  - MPI_F90:, mpif90
+  - MPI_INC:, -I/opt/mpich-3.2/include
+  - MPI_LIB:, -L/opt/mpich-3.2/lib -lmpich
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+configure: setting up libtool
+checking how to print strings... printf
+checking for style of include used by make... GNU
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... none
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking whether the shell understands some XSI constructs... yes
+checking whether the shell understands "+="... yes
+checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ar... ar
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking how to run the C preprocessor... gcc -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... no
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking for ifort... ifort
+checking whether we are using the GNU Fortran compiler... no
+checking whether ifort accepts -g... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking for ifort option to produce PIC... -fPIC
+checking if ifort PIC flag -fPIC works... yes
+checking if ifort static flag -static works... no
+checking if ifort supports -c -o file.o... yes
+checking if ifort supports -c -o file.o... (cached) yes
+checking whether the ifort linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+configure: ifort -> NORMAL MODE
+configure:       -> MPI PARALLELISATION IS SELECTED (CROCO)
+configure:       -> mpif90
+checking for Fortran compiler can handle Fortran-90 code... yes
+>>>
+>>>>> Searching NETCDF LIBRARY information
+>>>
+netCDF-Fortran 4.4.4
+configure: Submit nf-config --fflags and nf-config --flibs
+configure: NetCDF module: -I/opt/netcdf-4.4.1/include
+configure: NetCDF library: -L/opt/netcdf-4.4.1/lib -lnetcdff -lnetcdf -lnetcdf
+checking for Fortran-90 program linked with NetCDF library... 
+mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include  conftest.f90  -L/opt/netcdf-4.4.1/lib -lnetcdff -lnetcdf -lnetcdf
+yes
+configure: generating makefiles
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating tests/Makefile
+config.status: creating doc/Makefile
+config.status: creating examples/Makefile
+config.status: creating examples/matlab/Makefile
+config.status: executing depfiles commands
+config.status: executing libtool commands
+
+Configuration Parameters:
+------------------------
+NHMG's version........ 0.2.2
+prefix............... /home/ngrima/CROCO-NH
+FC................... mpif90
+FCFLAGS.............. -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include
+FCFLAGS_f90.......... 
+LDFLAGS..............  -xHost
+LIBS................. 
+ENABLE_OPTIMIZATION.. normal
+ENABLE_mpi_mpt....... no
+ENABLE_intel_mpi..... no
+ENABLE_open_mpi...... no
+ENABLE_mpich......... no
+ENABLE_mpicroco...... yes (Use CROCO ocean model settings)
+      MPI_LIB........ -L/opt/mpich-3.2/lib -lmpich
+      MPI_INC........ -I/opt/mpich-3.2/include
+ENABLE_NETCDF........ yes
+  -NETCDF_LIB........ -L/opt/netcdf-4.4.1/lib -lnetcdff -lnetcdf -lnetcdf
+  -NETCDF_INC........ -I/opt/netcdf-4.4.1/include
+ENABLE_TESTS......... no
+ENABLE_PROFILING..... no
+ENABLE_TRACEANALYSER. no
+host................. x86_64-unknown-linux-gnu
+
+Tue Jan 30 02:46:21 PST 2018
+
+*******************************************************************
+*              NHMG's configuration is completed                  *
+* You are now ready to run 'make clean', 'make' and 'make install'*
+*******************************************************************
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+Making clean in src
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/src'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making clean in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/src'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+test -z "libnhmg.la" || rm -f libnhmg.la
+rm -f ./so_locations
+rm -rf .libs _libs
+rm -f *.mod *.o *.a
+rm -f *.o
+rm -f *.lo
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/src'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/src'
+Making clean in tests
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/tests'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making clean in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/tests'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+rm -rf .libs _libs
+rm -f *.mod *.o
+rm -f *.o
+test -z "" || rm -f 
+test -z "" || rm -f 
+test -z "test-suite.log" || rm -f test-suite.log
+rm -f *.lo
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/tests'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/tests'
+Making clean in examples
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making clean in matlab
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+cd ../.. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making clean in .
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+cd ../.. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+rm -rf .libs _libs
+rm -f *.lo
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+rm -rf .libs _libs
+rm -f *.lo
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples'
+Making clean in doc
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/doc'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making clean in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/doc'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+rm -rf .libs _libs
+rm -f *.lo
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/doc'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/doc'
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+rm -rf .libs _libs
+rm -f *.lo
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+
+**********************
+** NHMG compilation **
+**********************
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+Making install in src
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/src'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making install in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/src'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_cst.lo mg_cst.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_cst.f90  -fPIC -o .libs/mg_cst.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_cst.f90 -o mg_cst.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_mpi.lo mg_mpi.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_mpi.f90  -fPIC -o .libs/mg_mpi.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_mpi.f90 -o mg_mpi.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_tictoc.lo mg_tictoc.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_tictoc.f90  -fPIC -o .libs/mg_tictoc.o
+mg_tictoc.f90(228): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+    write(lun,'(x,E9.3)', ADVANCE="no" ) sum(time_tictoc_sort(1:nblev,ii))
+-------------------^
+mg_tictoc.f90(284): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+       write(lun,'(x,E9.3)', ADVANCE="no" ) sum(time_tictoc(1:nblev,ii))
+----------------------^
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_tictoc.f90 -o mg_tictoc.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_namelist.lo mg_namelist.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_namelist.f90  -fPIC -o .libs/mg_namelist.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_namelist.f90 -o mg_namelist.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_netcdf_out.lo mg_netcdf_out.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_netcdf_out.f90  -fPIC -o .libs/mg_netcdf_out.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_netcdf_out.f90 -o mg_netcdf_out.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_grids.lo mg_grids.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_grids.f90  -fPIC -o .libs/mg_grids.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_grids.f90 -o mg_grids.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_mpi_exchange.lo mg_mpi_exchange.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_mpi_exchange.f90  -fPIC -o .libs/mg_mpi_exchange.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_mpi_exchange.f90 -o mg_mpi_exchange.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_gather.lo mg_gather.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_gather.f90  -fPIC -o .libs/mg_gather.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_gather.f90 -o mg_gather.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_horiz_grids.lo mg_horiz_grids.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_horiz_grids.f90  -fPIC -o .libs/mg_horiz_grids.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_horiz_grids.f90 -o mg_horiz_grids.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_vert_grids.lo mg_vert_grids.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_vert_grids.f90  -fPIC -o .libs/mg_vert_grids.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_vert_grids.f90 -o mg_vert_grids.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_projection.lo mg_projection.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_projection.f90  -fPIC -o .libs/mg_projection.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_projection.f90 -o mg_projection.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_relax.lo mg_relax.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_relax.f90  -fPIC -o .libs/mg_relax.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_relax.f90 -o mg_relax.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_intergrids.lo mg_intergrids.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_intergrids.f90  -fPIC -o .libs/mg_intergrids.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_intergrids.f90 -o mg_intergrids.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_solvers.lo mg_solvers.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_solvers.f90  -fPIC -o .libs/mg_solvers.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_solvers.f90 -o mg_solvers.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o mg_autotune.lo mg_autotune.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_autotune.f90  -fPIC -o .libs/mg_autotune.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c mg_autotune.f90 -o mg_autotune.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=compile mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c -o nhmg.lo nhmg.f90
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c nhmg.f90  -fPIC -o .libs/nhmg.o
+libtool: compile:  mpif90 -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -c nhmg.f90 -o nhmg.o >/dev/null 2>&1
+/bin/sh ../libtool  --tag=FC   --mode=link mpif90  -g -O2 -xHost -I/opt/mpich-3.2/include -I/opt/netcdf-4.4.1/include -version-number 0:0:0 -xHost -o libnhmg.la -rpath /home/ngrima/CROCO-NH/lib mg_cst.lo mg_mpi.lo mg_tictoc.lo mg_namelist.lo mg_netcdf_out.lo mg_grids.lo mg_mpi_exchange.lo mg_gather.lo mg_horiz_grids.lo mg_vert_grids.lo mg_projection.lo mg_relax.lo mg_intergrids.lo mg_solvers.lo mg_autotune.lo nhmg.lo  
+libtool: link: ifort -shared -nofor_main  .libs/mg_cst.o .libs/mg_mpi.o .libs/mg_tictoc.o .libs/mg_namelist.o .libs/mg_netcdf_out.o .libs/mg_grids.o .libs/mg_mpi_exchange.o .libs/mg_gather.o .libs/mg_horiz_grids.o .libs/mg_vert_grids.o .libs/mg_projection.o .libs/mg_relax.o .libs/mg_intergrids.o .libs/mg_solvers.o .libs/mg_autotune.o .libs/nhmg.o    -O2   -Wl,-soname -Wl,libnhmg.so.0 -o .libs/libnhmg.so.0.0.0
+libtool: link: (cd ".libs" && rm -f "libnhmg.so.0" && ln -s "libnhmg.so.0.0.0" "libnhmg.so.0")
+libtool: link: (cd ".libs" && rm -f "libnhmg.so" && ln -s "libnhmg.so.0.0.0" "libnhmg.so")
+libtool: link: ar cru .libs/libnhmg.a  mg_cst.o mg_mpi.o mg_tictoc.o mg_namelist.o mg_netcdf_out.o mg_grids.o mg_mpi_exchange.o mg_gather.o mg_horiz_grids.o mg_vert_grids.o mg_projection.o mg_relax.o mg_intergrids.o mg_solvers.o mg_autotune.o nhmg.o
+libtool: link: ranlib .libs/libnhmg.a
+libtool: link: ( cd ".libs" && rm -f "libnhmg.la" && ln -s "../libnhmg.la" "libnhmg.la" )
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/src'
+cd .. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+ /usr/bin/mkdir -p '/home/ngrima/CROCO-NH/lib'
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c   libnhmg.la '/home/ngrima/CROCO-NH/lib'
+libtool: install: /usr/bin/install -c .libs/libnhmg.so.0.0.0 /home/ngrima/CROCO-NH/lib/libnhmg.so.0.0.0
+libtool: install: (cd /home/ngrima/CROCO-NH/lib && { ln -s -f libnhmg.so.0.0.0 libnhmg.so.0 || { rm -f libnhmg.so.0 && ln -s libnhmg.so.0.0.0 libnhmg.so.0; }; })
+libtool: install: (cd /home/ngrima/CROCO-NH/lib && { ln -s -f libnhmg.so.0.0.0 libnhmg.so || { rm -f libnhmg.so && ln -s libnhmg.so.0.0.0 libnhmg.so; }; })
+libtool: install: /usr/bin/install -c .libs/libnhmg.lai /home/ngrima/CROCO-NH/lib/libnhmg.la
+libtool: install: /usr/bin/install -c .libs/libnhmg.a /home/ngrima/CROCO-NH/lib/libnhmg.a
+libtool: install: chmod 644 /home/ngrima/CROCO-NH/lib/libnhmg.a
+libtool: install: ranlib /home/ngrima/CROCO-NH/lib/libnhmg.a
+libtool: finish: PATH="/opt/mpich-3.2/bin:/home/intel/composer_xe_2013_sp1.3.174/bin/intel64:/usr/local/bin:/usr/bin:/bin:/sbin" ldconfig -n /home/ngrima/CROCO-NH/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /home/ngrima/CROCO-NH/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+ /usr/bin/mkdir -p '/home/ngrima/CROCO-NH/include'
+ /usr/bin/install -c -m 644 mg_cst.mod mg_mpi.mod mg_tictoc.mod mg_namelist.mod mg_netcdf_out.mod mg_grids.mod mg_mpi_exchange.mod mg_gather.mod mg_horiz_grids.mod mg_vert_grids.mod mg_projection.mod mg_relax.mod mg_intergrids.mod mg_solvers.mod mg_autotune.mod nhmg.mod '/home/ngrima/CROCO-NH/include'
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/src'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/src'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/src'
+Making install in tests
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/tests'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making install in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/tests'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/tests'
+cd .. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+ /usr/bin/mkdir -p '/home/ngrima/CROCO-NH/bin'
+ /usr/bin/install -c nhmg_namelist ts_namelist rt_namelist fh_namelist cuc_namelist '/home/ngrima/CROCO-NH/bin'
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/tests'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/tests'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/tests'
+Making install in examples
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making install in matlab
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+cd ../.. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making install in .
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+cd ../.. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+cd ../.. && make  am--refresh
+make[5]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[5]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/ngrima/CROCO-NH/examples/matlab'
+ /usr/bin/install -c -m 644 addcoef.m converge.m dummy.m makeD.m makeDzl.m makeM.m makeMzl.m makeP.m makeTc.m makeT.m metrics_3D.m richardson.m testM3D.m testM3Dzl.m test_oper.m '/home/ngrima/CROCO-NH/examples/matlab'
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples/matlab'
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/examples'
+cd .. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/examples'
+Making install in doc
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG/doc'
+cd .. && make  am--refresh
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+Making install in .
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG/doc'
+cd .. && make  am--refresh
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[3]: Entering directory '/home/ngrima/CROCO-NH/NHMG/doc'
+cd .. && make  am--refresh
+make[4]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[4]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/ngrima/CROCO-NH/doc'
+ /usr/bin/install -c -m 644 dummy.pdf '/home/ngrima/CROCO-NH/doc'
+make[3]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/doc'
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/doc'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG/doc'
+make[1]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Entering directory '/home/ngrima/CROCO-NH/NHMG'
+CDPATH="${ZSH_VERSION+.}:" && cd . && : 
+ cd . && : --gnu
+make[2]: Nothing to be done for 'install-exec-am'.
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+make[1]: Leaving directory '/home/ngrima/CROCO-NH/NHMG'
+
+***********************
+** CROCO compilation **
+***********************
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_nh.F90 > module_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_nh_.f90 -o module_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_nbq.F90 > module_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_nbq_.f90 -o module_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_qsort.F90 > module_qsort_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_qsort_.f90 -o module_qsort.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_parallel_nbq.F90 > module_parallel_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_parallel_nbq_.f90 -o module_parallel_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_tracetxt_out.F90 > module_tracetxt_out_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_tracetxt_out_.f90 -o module_tracetxt_out.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_param.F | ./mpc > module_param_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_param_.f -o module_param.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nump_nh.F90 > nump_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nump_nh_.f90 -o nump_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mat_cont_init_nh.F90 > mat_cont_init_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include mat_cont_init_nh_.f90 -o mat_cont_init_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mat_cont_nh.F90 > mat_cont_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include mat_cont_nh_.f90 -o mat_cont_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mat_mom_init_nh.F90 > mat_mom_init_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include mat_mom_init_nh_.f90 -o mat_mom_init_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mat_mom_nh.F90 > mat_mom_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include mat_mom_nh_.f90 -o mat_mom_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include initial_nh.F90 > initial_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include initial_nh_.f90 -o initial_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include grid_coef_nh.F90 > grid_coef_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include grid_coef_nh_.f90 -o grid_coef_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ru_nbq.F90 > ru_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ru_nbq_.f90 -o ru_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include viscous_nbq.F90 > viscous_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include viscous_nbq_.f90 -o viscous_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step3d_nbq.F90 > step3d_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step3d_nbq_.f90 -o step3d_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include density_nbq.F90 > density_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include density_nbq_.f90 -o density_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include spkitlocal_nh.F90 > spkitlocal_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include spkitlocal_nh_.f90 -o spkitlocal_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include MPI_setup_nbq.F90 > MPI_setup_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include MPI_setup_nbq_.f90 -o MPI_setup_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include parallele_nbq.F90 > parallele_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include parallele_nbq_.f90 -o parallele_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include output_nbq.F90 > output_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include output_nbq_.f90 -o output_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include implicit_nbq.F90 > implicit_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include implicit_nbq_.f90 -o implicit_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include amub2_tri.F90 > amub2_tri_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include amub2_tri_.f90 -o amub2_tri.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include numuvw_nh.F90 > numuvw_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include numuvw_nh_.f90 -o numuvw_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include grid_def_nh.F90 > grid_def_nh_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include grid_def_nh_.f90 -o grid_def_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include grid_exchange.F90 > grid_exchange_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include grid_exchange_.f90 -o grid_exchange.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cons_nbq.F90 > cons_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cons_nbq_.f90 -o cons_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include consout_nbq.F90 > consout_nbq_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include consout_nbq_.f90 -o consout_nbq.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include par_pisces.F90 > par_pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include par_pisces_.f90 -o par_pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ocean2pisces.F90 > ocean2pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ocean2pisces_.f90 -o ocean2pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include trc.F90 > trc_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include trc_.f90 -o trc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include sms_pisces.F90 > sms_pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include sms_pisces_.f90 -o sms_pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zche.F90 > p4zche_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zche_.f90 -o p4zche.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zint.F90 > p4zint_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zint_.f90 -o p4zint.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zlys.F90 > p4zlys_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zlys_.f90 -o p4zlys.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zflx.F90 > p4zflx_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zflx_.f90 -o p4zflx.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zlim.F90 > p4zlim_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zlim_.f90 -o p4zlim.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zsink.F90 > p4zsink_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zsink_.f90 -o p4zsink.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zmicro.F90 > p4zmicro_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zmicro_.f90 -o p4zmicro.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zmeso.F90 > p4zmeso_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zmeso_.f90 -o p4zmeso.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zmort.F90 > p4zmort_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zmort_.f90 -o p4zmort.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zopt.F90 > p4zopt_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zopt_.f90 -o p4zopt.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zprod.F90 > p4zprod_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zprod_.f90 -o p4zprod.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zrem.F90 > p4zrem_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zrem_.f90 -o p4zrem.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zsed.F90 > p4zsed_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zsed_.f90 -o p4zsed.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include p4zbio.F90 > p4zbio_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include p4zbio_.f90 -o p4zbio.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include trcwri_pisces.F90 > trcwri_pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include trcwri_pisces_.f90 -o trcwri_pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include trcsms_pisces.F90 > trcsms_pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include trcsms_pisces_.f90 -o trcsms_pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include trcini_pisces.F90 > trcini_pisces_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include trcini_pisces_.f90 -o trcini_pisces.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include pisces_ini.F90 > pisces_ini_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include pisces_ini_.f90 -o pisces_ini.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_parameter.F90 > module_oa_parameter_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_parameter_.f90 -o module_oa_parameter.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_time.F90 > module_oa_time_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_time_.f90 -o module_oa_time.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_space.F90 > module_oa_space_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_space_.f90 -o module_oa_space.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_periode.F90 > module_oa_periode_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_periode_.f90 -o module_oa_periode.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_variables.F90 > module_oa_variables_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_variables_.f90 -o module_oa_variables.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_type.F90 > module_oa_type_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_type_.f90 -o module_oa_type.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_stock.F90 > module_oa_stock_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_stock_.f90 -o module_oa_stock.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_level.F90 > module_oa_level_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_level_.f90 -o module_oa_level.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_interface.F90 > module_oa_interface_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_interface_.f90 -o module_oa_interface.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include module_oa_upd.F90 > module_oa_upd_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include module_oa_upd_.f90 -o module_oa_upd.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include croco_oa.F90 > croco_oa_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include croco_oa_.f90 -o croco_oa.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include var_oa.F90 > var_oa_.f90
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include var_oa_.f90 -o var_oa.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include main.F | ./mpc > main_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include main_.f -o main.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step.F | ./mpc > step_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step_.f -o step.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include read_inp.F | ./mpc > read_inp_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include read_inp_.f -o read_inp.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include timers_roms.F | ./mpc > timers_roms_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include timers_roms_.f -o timers_roms.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_scalars.F | ./mpc > init_scalars_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_scalars_.f -o init_scalars.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_arrays.F | ./mpc > init_arrays_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_arrays_.f -o init_arrays.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_weights.F | ./mpc > set_weights_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_weights_.f -o set_weights.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_scoord.F | ./mpc > set_scoord_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_scoord_.f -o set_scoord.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ana_grid.F | ./mpc > ana_grid_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ana_grid_.f -o ana_grid.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include setup_grid1.F | ./mpc > setup_grid1_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include setup_grid1_.f -o setup_grid1.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include setup_grid2.F | ./mpc > setup_grid2_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include setup_grid2_.f -o setup_grid2.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+setup_grid2_.f(465): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+     &        '(F12.6,F13.6,2(1x,E14.9),2F12.8)')
+----------------------------------^
+setup_grid2_.f(467): remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+          if (mynode.eq.0) write( stdout,'(2(3x,A,1PE27.21)/)')
+-----------------------------------------------------^
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_nudgcof.F | ./mpc > set_nudgcof_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_nudgcof_.f -o set_nudgcof.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ana_initial.F | ./mpc > ana_initial_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ana_initial_.f -o ana_initial.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include analytical.F | ./mpc > analytical_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include analytical_.f -o analytical.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include zonavg.F | ./mpc > zonavg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include zonavg_.f -o zonavg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step2d.F | ./mpc > step2d_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step2d_.f -o step2d.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include u2dbc.F | ./mpc > u2dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include u2dbc_.f -o u2dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include v2dbc.F | ./mpc > v2dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include v2dbc_.f -o v2dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include zetabc.F | ./mpc > zetabc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include zetabc_.f -o zetabc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include obc_volcons.F | ./mpc > obc_volcons_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include obc_volcons_.f -o obc_volcons.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include pre_step3d.F | ./mpc > pre_step3d_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include pre_step3d_.f -o pre_step3d.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step3d_t.F | ./mpc > step3d_t_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step3d_t_.f -o step3d_t.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step3d_uv1.F | ./mpc > step3d_uv1_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step3d_uv1_.f -o step3d_uv1.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step3d_uv2.F | ./mpc > step3d_uv2_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step3d_uv2_.f -o step3d_uv2.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include prsgrd.F | ./mpc > prsgrd_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include prsgrd_.f -o prsgrd.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include rhs3d.F | ./mpc > rhs3d_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include rhs3d_.f -o rhs3d.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_depth.F | ./mpc > set_depth_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_depth_.f -o set_depth.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include omega.F | ./mpc > omega_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include omega_.f -o omega.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include uv3dmix.F | ./mpc > uv3dmix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include uv3dmix_.f -o uv3dmix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include uv3dmix_spg.F | ./mpc > uv3dmix_spg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include uv3dmix_spg_.f -o uv3dmix_spg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include t3dmix.F | ./mpc > t3dmix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include t3dmix_.f -o t3dmix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include t3dmix_spg.F | ./mpc > t3dmix_spg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include t3dmix_spg_.f -o t3dmix_spg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include hmix_coef.F | ./mpc > hmix_coef_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include hmix_coef_.f -o hmix_coef.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wetdry.F | ./mpc > wetdry_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wetdry_.f -o wetdry.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+wetdry_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include u3dbc.F | ./mpc > u3dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include u3dbc_.f -o u3dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include v3dbc.F | ./mpc > v3dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include v3dbc_.f -o v3dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include t3dbc.F | ./mpc > t3dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include t3dbc_.f -o t3dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include rho_eos.F | ./mpc > rho_eos_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include rho_eos_.f -o rho_eos.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ab_ratio.F | ./mpc > ab_ratio_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ab_ratio_.f -o ab_ratio.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include alfabeta.F | ./mpc > alfabeta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include alfabeta_.f -o alfabeta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include ana_vmix.F | ./mpc > ana_vmix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include ana_vmix_.f -o ana_vmix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include bvf_mix.F | ./mpc > bvf_mix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include bvf_mix_.f -o bvf_mix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lmd_vmix.F | ./mpc > lmd_vmix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lmd_vmix_.f -o lmd_vmix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include gls_mixing.F | ./mpc > gls_mixing_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include gls_mixing_.f -o gls_mixing.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lmd_skpp.F | ./mpc > lmd_skpp_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lmd_skpp_.f -o lmd_skpp.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lmd_bkpp.F | ./mpc > lmd_bkpp_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lmd_bkpp_.f -o lmd_bkpp.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lmd_swfrac.F | ./mpc > lmd_swfrac_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lmd_swfrac_.f -o lmd_swfrac.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lmd_wscale.F | ./mpc > lmd_wscale_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lmd_wscale_.f -o lmd_wscale.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include gls_prestep.F | ./mpc > gls_prestep_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include gls_prestep_.f -o gls_prestep.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include diag.F | ./mpc > diag_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include diag_.f -o diag.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wvlcty.F | ./mpc > wvlcty_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wvlcty_.f -o wvlcty.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include checkdims.F | ./mpc > checkdims_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include checkdims_.f -o checkdims.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include grid_stiffness.F | ./mpc > grid_stiffness_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include grid_stiffness_.f -o grid_stiffness.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+grid_stiffness_.f(329): remark #8290: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+3'.
+          if (mynode.eq.0) write(stdout,'(/1x,A,F12.10,2x,A,F14.10/)')
+-------------------------------------------------^
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include bio_diag.F | ./mpc > bio_diag_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include bio_diag_.f -o bio_diag.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include checkkwds.F | ./mpc > checkkwds_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include checkkwds_.f -o checkkwds.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+mpif90 -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include  -o checkkwds checkkwds.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+rm -f setup_kwds.F
+./checkkwds
+
+ This is CHECKKWDS: Creating new version of "setup_kwds.F".
+
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include setup_kwds.F | ./mpc > setup_kwds_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include setup_kwds_.f -o setup_kwds.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include check_kwds.F | ./mpc > check_kwds_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include check_kwds_.f -o check_kwds.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include srcscheck.F | ./mpc > srcscheck_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include srcscheck_.f -o srcscheck.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+mpif90 -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include  -o srcscheck srcscheck.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+rm -f check_srcs.F
+./srcscheck
+
+ This is SRCSCHECK: Creating new version of check_srcs.F.
+
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include check_srcs.F | ./mpc > check_srcs_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include check_srcs_.f -o check_srcs.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cppcheck.F | ./mpc > cppcheck_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cppcheck_.f -o cppcheck.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+mpif90 -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include  -o cppcheck cppcheck.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cat cppdefs.h cppdefs_dev.h > mergcpp.txt
+./cppcheck
+
+ This is CPPCHECK: Creating new version of check_switches1.F.
+
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include check_switches1.F | ./mpc > check_switches1_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include check_switches1_.f -o check_switches1.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include check_switches2.F | ./mpc > check_switches2_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include check_switches2_.f -o check_switches2.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include debug.F | ./mpc > debug_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include debug_.f -o debug.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include output.F | ./mpc > output_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include output_.f -o output.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include put_global_atts.F | ./mpc > put_global_atts_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include put_global_atts_.f -o put_global_atts.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_fread.F | ./mpc > nf_fread_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_fread_.f -o nf_fread.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_fread_x.F | ./mpc > nf_fread_x_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_fread_x_.f -o nf_fread_x.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_fread_y.F | ./mpc > nf_fread_y_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_fread_y_.f -o nf_fread_y.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_read_bry.F | ./mpc > nf_read_bry_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_read_bry_.f -o nf_read_bry.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_read_bry_w.F | ./mpc > nf_read_bry_w_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_read_bry_w_.f -o nf_read_bry_w.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_date.F | ./mpc > get_date_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_date_.f -o get_date.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include lenstr.F | ./mpc > lenstr_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include lenstr_.f -o lenstr.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include closecdf.F | ./mpc > closecdf_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include closecdf_.f -o closecdf.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include insert_node.F | ./mpc > insert_node_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include insert_node_.f -o insert_node.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include fillvalue.F | ./mpc > fillvalue_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include fillvalue_.f -o fillvalue.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include nf_add_attribute.F | ./mpc > nf_add_attribute_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include nf_add_attribute_.f -o nf_add_attribute.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_cycle.F | ./mpc > set_cycle_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_cycle_.f -o set_cycle.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_grid_2d.F | ./mpc > def_grid_2d_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_grid_2d_.f -o def_grid_2d.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_grid_3d.F | ./mpc > def_grid_3d_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_grid_3d_.f -o def_grid_3d.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_his.F | ./mpc > def_his_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_his_.f -o def_his.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_rst.F | ./mpc > def_rst_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_rst_.f -o def_rst.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_diags.F | ./mpc > def_diags_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_diags_.f -o def_diags.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_diagsM.F | ./mpc > def_diagsM_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_diagsM_.f -o def_diagsM.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_bio_diags.F | ./mpc > def_bio_diags_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_bio_diags_.f -o def_bio_diags.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_grid.F | ./mpc > wrt_grid_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_grid_.f -o wrt_grid.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_his.F | ./mpc > wrt_his_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_his_.f -o wrt_his.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_avg.F | ./mpc > wrt_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_avg_.f -o wrt_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_rst.F | ./mpc > wrt_rst_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_rst_.f -o wrt_rst.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_diags.F | ./mpc > wrt_diags_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_diags_.f -o wrt_diags.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_diags_avg.F | ./mpc > wrt_diags_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_diags_avg_.f -o wrt_diags_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_diagsM.F | ./mpc > wrt_diagsM_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_diagsM_.f -o wrt_diagsM.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_diagsM_avg.F | ./mpc > wrt_diagsM_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_diagsM_avg_.f -o wrt_diagsM_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_bio_diags.F | ./mpc > wrt_bio_diags_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_bio_diags_.f -o wrt_bio_diags.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_bio_diags_avg.F | ./mpc > wrt_bio_diags_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_bio_diags_avg_.f -o wrt_bio_diags_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_avg.F | ./mpc > set_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_avg_.f -o set_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_diags_avg.F | ./mpc > set_diags_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_diags_avg_.f -o set_diags_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_diagsM_avg.F | ./mpc > set_diagsM_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_diagsM_avg_.f -o set_diagsM_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_bio_diags_avg.F | ./mpc > set_bio_diags_avg_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_bio_diags_avg_.f -o set_bio_diags_avg.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_grid.F | ./mpc > get_grid_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_grid_.f -o get_grid.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_initial.F | ./mpc > get_initial_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_initial_.f -o get_initial.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_vbc.F | ./mpc > get_vbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_vbc_.f -o get_vbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_wwave.F | ./mpc > get_wwave_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_wwave_.f -o get_wwave.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_tclima.F | ./mpc > get_tclima_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_tclima_.f -o get_tclima.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_uclima.F | ./mpc > get_uclima_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_uclima_.f -o get_uclima.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_ssh.F | ./mpc > get_ssh_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_ssh_.f -o get_ssh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_sss.F | ./mpc > get_sss_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_sss_.f -o get_sss.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_smflux.F | ./mpc > get_smflux_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_smflux_.f -o get_smflux.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_stflux.F | ./mpc > get_stflux_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_stflux_.f -o get_stflux.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_srflux.F | ./mpc > get_srflux_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_srflux_.f -o get_srflux.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_sst.F | ./mpc > get_sst_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_sst_.f -o get_sst.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_tides.F | ./mpc > get_tides_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_tides_.f -o get_tides.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include clm_tides.F | ./mpc > clm_tides_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include clm_tides_.f -o clm_tides.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_bulk.F | ./mpc > get_bulk_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_bulk_.f -o get_bulk.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include bulk_flux.F | ./mpc > bulk_flux_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include bulk_flux_.f -o bulk_flux.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_bry.F | ./mpc > get_bry_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_bry_.f -o get_bry.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_bry_bio.F | ./mpc > get_bry_bio_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_bry_bio_.f -o get_bry_bio.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include sstskin.F | ./mpc > sstskin_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include sstskin_.f -o sstskin.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_psource.F | ./mpc > get_psource_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_psource_.f -o get_psource.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_psource_ts.F | ./mpc > get_psource_ts_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_psource_ts_.f -o get_psource_ts.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include mrl_wci.F | ./mpc > mrl_wci_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include mrl_wci_.f -o mrl_wci.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wkb_wwave.F | ./mpc > wkb_wwave_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wkb_wwave_.f -o wkb_wwave.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wkbbc.F | ./mpc > wkbbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wkbbc_.f -o wkbbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_bry_wkb.F | ./mpc > get_bry_wkb_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_bry_wkb_.f -o get_bry_wkb.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include online_bulk_var.F | ./mpc > online_bulk_var_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include online_bulk_var_.f -o online_bulk_var.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+online_bulk_var_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include online_get_bulk.F | ./mpc > online_get_bulk_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include online_get_bulk_.f -o online_get_bulk.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+online_get_bulk_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include online_interp.F | ./mpc > online_interp_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include online_interp_.f -o online_interp.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include online_interpolate_bulk.F | ./mpc > online_interpolate_bulk_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include online_interpolate_bulk_.f -o online_interpolate_bulk.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+online_interpolate_bulk_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include online_set_bulk.F | ./mpc > online_set_bulk_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include online_set_bulk_.f -o online_set_bulk.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+online_set_bulk_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_floats.F | ./mpc > init_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_floats_.f -o init_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_floats.F | ./mpc > wrt_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_floats_.f -o wrt_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step_floats.F | ./mpc > step_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step_floats_.f -o step_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include rhs_floats.F | ./mpc > rhs_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include rhs_floats_.f -o rhs_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include interp_rho.F | ./mpc > interp_rho_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include interp_rho_.f -o interp_rho.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_floats.F | ./mpc > def_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_floats_.f -o def_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_arrays_floats.F | ./mpc > init_arrays_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_arrays_floats_.f -o init_arrays_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include random_walk.F | ./mpc > random_walk_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include random_walk_.f -o random_walk.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include get_initial_floats.F | ./mpc > get_initial_floats_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include get_initial_floats_.f -o get_initial_floats.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_sta.F | ./mpc > init_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_sta_.f -o init_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wrt_sta.F | ./mpc > wrt_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wrt_sta_.f -o wrt_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step_sta.F | ./mpc > step_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step_sta_.f -o step_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include interp_sta.F | ./mpc > interp_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include interp_sta_.f -o interp_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include def_sta.F | ./mpc > def_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include def_sta_.f -o def_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_arrays_sta.F | ./mpc > init_arrays_sta_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_arrays_sta_.f -o init_arrays_sta.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include biology.F | ./mpc > biology_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include biology_.f -o biology.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include o2sato.F | ./mpc > o2sato_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include o2sato_.f -o o2sato.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include sediment.F | ./mpc > sediment_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include sediment_.f -o sediment.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include bbl.F | ./mpc > bbl_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include bbl_.f -o bbl.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include MPI_Setup.F | ./mpc > MPI_Setup_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include MPI_Setup_.f -o MPI_Setup.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include MessPass2D.F | ./mpc > MessPass2D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include MessPass2D_.f -o MessPass2D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include MessPass3D.F | ./mpc > MessPass3D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include MessPass3D_.f -o MessPass3D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include exchange.F | ./mpc > exchange_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include exchange_.f -o exchange.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include autotiling.F | ./mpc > autotiling_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include autotiling_.f -o autotiling.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include zoom.F | ./mpc > zoom_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include zoom_.f -o zoom.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include update2D.F | ./mpc > update2D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include update2D_.f -o update2D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include set_nudgcof_fine.F | ./mpc > set_nudgcof_fine_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include set_nudgcof_fine_.f -o set_nudgcof_fine.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include zoombc_2D.F | ./mpc > zoombc_2D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include zoombc_2D_.f -o zoombc_2D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include zoombc_3D.F | ./mpc > zoombc_3D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include zoombc_3D_.f -o zoombc_3D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include uv3dpremix.F | ./mpc > uv3dpremix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include uv3dpremix_.f -o uv3dpremix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include t3dpremix.F | ./mpc > t3dpremix_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include t3dpremix_.f -o t3dpremix.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include update3D.F | ./mpc > update3D_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include update3D_.f -o update3D.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include Agrif2Model.F | ./mpc > Agrif2Model_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include Agrif2Model_.f -o Agrif2Model.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include init_xios.F | ./mpc > init_xios_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include init_xios_.f -o init_xios.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+init_xios_.f: remark #5133: The input stream is empty
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include send_xios_diags.F | ./mpc > send_xios_diags_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include send_xios_diags_.f -o send_xios_diags.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include step3d_w.F | ./mpc > step3d_w_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include step3d_w_.f -o step3d_w.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include rhs3d_w_nh.F | ./mpc > rhs3d_w_nh_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include rhs3d_w_nh_.f -o rhs3d_w_nh.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include w3dbc.F | ./mpc > w3dbc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include w3dbc_.f -o w3dbc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include unbq_bc.F | ./mpc > unbq_bc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include unbq_bc_.f -o unbq_bc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include vnbq_bc.F | ./mpc > vnbq_bc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include vnbq_bc_.f -o vnbq_bc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include wnbq_bc.F | ./mpc > wnbq_bc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include wnbq_bc_.f -o wnbq_bc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include rnbq_bc.F | ./mpc > rnbq_bc_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include rnbq_bc_.f -o rnbq_bc.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_define.F | ./mpc > cpl_prism_define_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_define_.f -o cpl_prism_define.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_put.F | ./mpc > cpl_prism_put_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_put_.f -o cpl_prism_put.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_init.F | ./mpc > cpl_prism_init_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_init_.f -o cpl_prism_init.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_get.F | ./mpc > cpl_prism_get_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_get_.f -o cpl_prism_get.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_getvar.F | ./mpc > cpl_prism_getvar_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_getvar_.f -o cpl_prism_getvar.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+cpp -traditional -DLinux -DIfort -P -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include cpl_prism_getlistvals.F | ./mpc > cpl_prism_getlistvals_.f
+mpif90 -c -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include cpl_prism_getlistvals_.f -o cpl_prism_getlistvals.o
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+mpif90 -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/ngrima/CROCO-NH/include  -o a.out module_nh.o module_nbq.o module_qsort.o module_parallel_nbq.o module_tracetxt_out.o module_param.o nump_nh.o mat_cont_init_nh.o mat_cont_nh.o mat_mom_init_nh.o mat_mom_nh.o initial_nh.o grid_coef_nh.o ru_nbq.o viscous_nbq.o step3d_nbq.o density_nbq.o spkitlocal_nh.o MPI_setup_nbq.o parallele_nbq.o output_nbq.o implicit_nbq.o amub2_tri.o numuvw_nh.o grid_def_nh.o grid_exchange.o cons_nbq.o consout_nbq.o par_pisces.o ocean2pisces.o trc.o sms_pisces.o p4zche.o p4zint.o p4zlys.o p4zflx.o p4zlim.o p4zsink.o p4zmicro.o p4zmeso.o p4zmort.o p4zopt.o p4zprod.o p4zrem.o p4zsed.o p4zbio.o trcwri_pisces.o trcsms_pisces.o trcini_pisces.o pisces_ini.o module_oa_parameter.o module_oa_time.o module_oa_space.o module_oa_periode.o module_oa_variables.o module_oa_type.o module_oa_stock.o module_oa_level.o module_oa_interface.o module_oa_upd.o croco_oa.o var_oa.o main.o step.o read_inp.o timers_roms.o init_scalars.o init_arrays.o set_weights.o set_scoord.o ana_grid.o setup_grid1.o setup_grid2.o set_nudgcof.o ana_initial.o analytical.o zonavg.o step2d.o u2dbc.o v2dbc.o zetabc.o obc_volcons.o pre_step3d.o step3d_t.o step3d_uv1.o step3d_uv2.o prsgrd.o rhs3d.o set_depth.o omega.o uv3dmix.o uv3dmix_spg.o t3dmix.o t3dmix_spg.o hmix_coef.o wetdry.o u3dbc.o v3dbc.o t3dbc.o rho_eos.o ab_ratio.o alfabeta.o ana_vmix.o bvf_mix.o lmd_vmix.o gls_mixing.o lmd_skpp.o lmd_bkpp.o lmd_swfrac.o lmd_wscale.o gls_prestep.o diag.o wvlcty.o checkdims.o grid_stiffness.o bio_diag.o setup_kwds.o check_kwds.o check_srcs.o check_switches1.o check_switches2.o debug.o output.o put_global_atts.o nf_fread.o nf_fread_x.o nf_fread_y.o nf_read_bry.o nf_read_bry_w.o get_date.o lenstr.o closecdf.o insert_node.o fillvalue.o nf_add_attribute.o set_cycle.o def_grid_2d.o def_grid_3d.o def_his.o def_rst.o def_diags.o def_diagsM.o def_bio_diags.o wrt_grid.o wrt_his.o wrt_avg.o wrt_rst.o wrt_diags.o wrt_diags_avg.o wrt_diagsM.o wrt_diagsM_avg.o wrt_bio_diags.o wrt_bio_diags_avg.o set_avg.o set_diags_avg.o set_diagsM_avg.o set_bio_diags_avg.o get_grid.o get_initial.o get_vbc.o get_wwave.o get_tclima.o get_uclima.o get_ssh.o get_sss.o get_smflux.o get_stflux.o get_srflux.o get_sst.o get_tides.o clm_tides.o get_bulk.o bulk_flux.o get_bry.o get_bry_bio.o sstskin.o get_psource.o get_psource_ts.o mrl_wci.o wkb_wwave.o wkbbc.o get_bry_wkb.o online_bulk_var.o online_get_bulk.o online_interp.o online_interpolate_bulk.o online_set_bulk.o init_floats.o wrt_floats.o step_floats.o rhs_floats.o interp_rho.o def_floats.o init_arrays_floats.o random_walk.o get_initial_floats.o init_sta.o wrt_sta.o step_sta.o interp_sta.o def_sta.o init_arrays_sta.o biology.o o2sato.o sediment.o bbl.o MPI_Setup.o MessPass2D.o MessPass3D.o exchange.o autotiling.o zoom.o update2D.o set_nudgcof_fine.o zoombc_2D.o zoombc_3D.o uv3dpremix.o t3dpremix.o update3D.o Agrif2Model.o init_xios.o send_xios_diags.o step3d_w.o rhs3d_w_nh.o w3dbc.o unbq_bc.o vnbq_bc.o wnbq_bc.o rnbq_bc.o cpl_prism_define.o cpl_prism_put.o cpl_prism_init.o cpl_prism_get.o cpl_prism_getvar.o cpl_prism_getlistvals.o -L/opt/netcdf-4.4.1/lib -lnetcdff -L/opt/mpich-3.2/lib -lmpich -L/home/ngrima/CROCO-NH/lib -lnhmg  
+ifort: command line warning #10212: -fp-model precise evaluates in source precision with Fortran.
+mv a.out croco
+'croco' -> '/home/ngrima/CROCO-NH/Run/croco'
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+** Please verify your LD_LIBRARY_PATH for NHMG library. 
+** You can update it using one of these two commands: 
+** (csh)  setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH:/home/ngrima/CROCO-NH/lib
+** (bash) export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/ngrima/CROCO-NH/lib
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
