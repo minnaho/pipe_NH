@@ -6,18 +6,20 @@
      &      , b3dgrd(4)
      &      , r3dgrd(4),  u3dgrd(4), v3dgrd(4), w3dgrd(4), itrc
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -38,14 +40,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -55,10 +59,12 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -68,7 +74,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -83,13 +88,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -99,9 +106,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -144,6 +148,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -155,10 +161,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -171,8 +173,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -1343,19 +1343,22 @@
           call nf_add_attribute(ncid, hisVWstr, indxVWstr, 5,
      &                          NF_REAL, ierr)
         endif
-        if (wrthis(indxDiff)) then
-          lvar=lenstr(vname(1,indxDiff))
-          ierr=nf_def_var (ncid, vname(1,indxDiff)(1:lvar),
-     &                             NF_REAL, 4, r3dgrd, hisDiff)
-          lvar=lenstr(vname(2,indxDiff))
-          ierr=nf_put_att_text (ncid, hisDiff, 'long_name', lvar,
-     &                                  vname(2,indxDiff)(1:lvar))
-          lvar=lenstr(vname(4,indxDiff))
-          ierr=nf_put_att_text (ncid, hisDiff, 'field',     lvar,
-     &                                  vname(4,indxDiff)(1:lvar))
-          call nf_add_attribute(ncid, hisDiff, indxDiff, 5,
+        if (wrthis(indxVisc)) then
+          lvar=lenstr(vname(1,indxVisc))
+          ierr=nf_def_var (ncid, vname(1,indxVisc)(1:lvar),
+     &                             NF_REAL, 4, r3dgrd, hisVisc)
+          lvar=lenstr(vname(2,indxVisc))
+          ierr=nf_put_att_text (ncid, hisVisc, 'long_name', lvar,
+     &                                  vname(2,indxVisc)(1:lvar))
+          lvar=lenstr(vname(3,indxVisc))
+          ierr=nf_put_att_text (ncid, hisVisc, 'units',     lvar,
+     &                                  vname(3,indxVisc)(1:lvar))
+          lvar=lenstr(vname(4,indxVisc))
+          ierr=nf_put_att_text (ncid, hisVisc, 'field',     lvar,
+     &                                  vname(4,indxVisc)(1:lvar))
+          call nf_add_attribute(ncid, hisVisc, indxVisc, 5,
      &                          NF_REAL, ierr)
-       endif
+        endif
         if (wrthis(indxAkv)) then
           lvar=lenstr(vname(1,indxAkv))
           ierr=nf_def_var (ncid, vname(1,indxAkv)(1:lvar),
@@ -1403,38 +1406,6 @@
      &                                  vname(4,indxAks)(1:lvar))
           call nf_add_attribute(ncid, hisAks, indxAks, 5, NF_REAL,
      &                                                           ierr)
-        endif
-        if (wrthis(indxHbl)) then
-          lvar=lenstr(vname(1,indxHbl))
-          ierr=nf_def_var (ncid, vname(1,indxHbl)(1:lvar),
-     &                             NF_REAL, 3, r2dgrd, hisHbl)
-          lvar=lenstr(vname(2,indxHbl))
-          ierr=nf_put_att_text (ncid, hisHbl, 'long_name', lvar,
-     &                                  vname(2,indxHbl)(1:lvar))
-          lvar=lenstr(vname(3,indxHbl))
-          ierr=nf_put_att_text (ncid, hisHbl, 'units',     lvar,
-     &                                  vname(3,indxHbl)(1:lvar))
-          lvar=lenstr(vname(4,indxHbl))
-          ierr=nf_put_att_text (ncid, hisHbl, 'field',     lvar,
-     &                                  vname(4,indxHbl)(1:lvar))
-          call nf_add_attribute(ncid, hisHbl, indxHbl, 5, NF_REAL,
-     &                                                            ierr)
-        endif
-        if (wrthis(indxHbbl)) then
-          lvar=lenstr(vname(1,indxHbbl))
-          ierr=nf_def_var (ncid, vname(1,indxHbbl)(1:lvar),
-     &                             NF_REAL, 3, r2dgrd, hisHbbl)
-          lvar=lenstr(vname(2,indxHbbl))
-          ierr=nf_put_att_text (ncid, hisHbbl, 'long_name', lvar,
-     &                                  vname(2,indxHbbl)(1:lvar))
-          lvar=lenstr(vname(3,indxHbbl))
-          ierr=nf_put_att_text (ncid, hisHbbl, 'units',     lvar,
-     &                                  vname(3,indxHbbl)(1:lvar))
-          lvar=lenstr(vname(4,indxHbbl))
-          ierr=nf_put_att_text (ncid, hisHbbl, 'field',     lvar,
-     &                                  vname(4,indxHbbl)(1:lvar))
-          call nf_add_attribute(ncid, hisHbbl, indxHbbl, 5,
-     &                          NF_REAL, ierr)
         endif
         if (wrthis(indxShflx)) then
           lvar=lenstr(vname(1,indxShflx))
@@ -1636,11 +1607,11 @@
             goto 99
           endif
         endif
-        if (wrthis(indxDiff)) then
-          lvar=lenstr(vname(1,indxDiff))
-          ierr=nf_inq_varid (ncid, vname(1,indxDiff)(1:lvar), hisDiff)
+        if (wrthis(indxVisc)) then
+          lvar=lenstr(vname(1,indxVisc))
+          ierr=nf_inq_varid (ncid, vname(1,indxVisc)(1:lvar), hisVisc)
           if (ierr .ne. nf_noerr) then
-            write(stdout,1) vname(1,indxDiff)(1:lvar), hisname(1:lstr)
+            write(stdout,1) vname(1,indxVisc)(1:lvar), hisname(1:lstr)
             goto 99
           endif
         endif
@@ -1665,22 +1636,6 @@
           ierr=nf_inq_varid (ncid,vname(1,indxAks)(1:lvar), hisAks)
           if (ierr .ne. nf_noerr) then
             write(stdout,1) vname(1,indxAks)(1:lvar), hisname(1:lstr)
-            goto 99
-          endif
-        endif
-        if (wrthis(indxHbl)) then
-          lvar=lenstr(vname(1,indxHbl))
-          ierr=nf_inq_varid (ncid,vname(1,indxHbl)(1:lvar), hisHbl)
-          if (ierr .ne. nf_noerr) then
-          write(stdout,1) vname(1,indxHbl)(1:lvar), hisname(1:lstr)
-            goto 99
-          endif
-        endif
-        if (wrthis(indxHbbl)) then
-          lvar=lenstr(vname(1,indxHbbl))
-          ierr=nf_inq_varid (ncid,vname(1,indxHbbl)(1:lvar), hisHbbl)
-          if (ierr .ne. nf_noerr) then
-          write(stdout,1) vname(1,indxHbbl)(1:lvar), hisname(1:lstr)
             goto 99
           endif
         endif
@@ -1735,18 +1690,20 @@
      &      , b3dgrd(4)
      &      , r3dgrd(4),  u3dgrd(4), v3dgrd(4), w3dgrd(4), itrc
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -1767,14 +1724,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -1784,10 +1743,12 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -1797,7 +1758,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -1812,13 +1772,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -1828,9 +1790,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -1873,6 +1832,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -1884,10 +1845,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -1900,8 +1857,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -3087,20 +3042,23 @@
           call nf_add_attribute(ncid, avgVWstr, indxVWstr, 5,
      &                          NF_REAL, ierr)
         endif
-        if (wrtavg(indxDiff)) then
-          lvar=lenstr(vname(1,indxDiff))
-          ierr=nf_def_var (ncid, vname(1,indxDiff)(1:lvar),
-     &                             NF_REAL, 4, r3dgrd, avgDiff)
-          text='averaged '/ /vname(2,indxDiff)
+        if (wrtavg(indxVisc)) then
+          lvar=lenstr(vname(1,indxVisc))
+          ierr=nf_def_var (ncid, vname(1,indxVisc)(1:lvar),
+     &                             NF_REAL, 4, r3dgrd, avgVisc)
+          text='averaged '/ /vname(2,indxVisc)
           lvar=lenstr(text)
-          ierr=nf_put_att_text (ncid, avgDiff, 'long_name', lvar,
+          ierr=nf_put_att_text (ncid, avgVisc, 'long_name', lvar,
      &                                              text(1:lvar))
-          lvar=lenstr(vname(4,indxDiff))
-          ierr=nf_put_att_text (ncid, avgDiff, 'field',     lvar,
-     &                                  vname(4,indxDiff)(1:lvar))
-          call nf_add_attribute(ncid, avgDiff, indxDiff, 5,
+          lvar=lenstr(vname(3,indxVisc))
+          ierr=nf_put_att_text (ncid, avgVisc, 'units',     lvar,
+     &                                  vname(3,indxVisc)(1:lvar))
+          lvar=lenstr(vname(4,indxVisc))
+          ierr=nf_put_att_text (ncid, avgVisc, 'field',     lvar,
+     &                                  vname(4,indxVisc)(1:lvar))
+          call nf_add_attribute(ncid, avgVisc, indxVisc, 5,
      &                          NF_REAL, ierr)
-       endif
+        endif
         if (wrtavg(indxAkv)) then
           lvar=lenstr(vname(1,indxAkv))
           ierr=nf_def_var (ncid, vname(1,indxAkv)(1:lvar),
@@ -3151,40 +3109,6 @@
      &                                  vname(4,indxAks)(1:lvar))
           call nf_add_attribute(ncid, avgAks, indxAks, 5, NF_REAL,
      &                                                           ierr)
-        endif
-        if (wrtavg(indxHbl)) then
-          lvar=lenstr(vname(1,indxHbl))
-          ierr=nf_def_var (ncid, vname(1,indxHbl)(1:lvar),
-     &                             NF_REAL, 3, r2dgrd, avgHbl)
-          text='averaged '/ /vname(2,indxHbl)
-          lvar=lenstr(text)
-          ierr=nf_put_att_text (ncid, avgHbl, 'long_name', lvar,
-     &                                              text(1:lvar))
-          lvar=lenstr(vname(3,indxHbl))
-          ierr=nf_put_att_text (ncid, avgHbl, 'units',     lvar,
-     &                                  vname(3,indxHbl)(1:lvar))
-          lvar=lenstr(vname(4,indxHbl))
-          ierr=nf_put_att_text (ncid, avgHbl, 'field',     lvar,
-     &                                  vname(4,indxHbl)(1:lvar))
-          call nf_add_attribute(ncid, avgHbl, indxHbl, 5, NF_REAL,
-     &                                                            ierr)
-        endif
-        if (wrtavg(indxHbbl)) then
-          lvar=lenstr(vname(1,indxHbbl))
-          ierr=nf_def_var (ncid, vname(1,indxHbbl)(1:lvar),
-     &                             NF_REAL, 3, r2dgrd, avgHbbl)
-          text='averaged '/ /vname(2,indxHbbl)
-          lvar=lenstr(text)
-          ierr=nf_put_att_text (ncid, avgHbbl, 'long_name', lvar,
-     &                                              text(1:lvar))
-          lvar=lenstr(vname(3,indxHbbl))
-          ierr=nf_put_att_text (ncid, avgHbbl, 'units',     lvar,
-     &                                  vname(3,indxHbbl)(1:lvar))
-          lvar=lenstr(vname(4,indxHbbl))
-          ierr=nf_put_att_text (ncid, avgHbbl, 'field',     lvar,
-     &                                  vname(4,indxHbbl)(1:lvar))
-          call nf_add_attribute(ncid, avgHbbl, indxHbbl, 5,
-     &                          NF_REAL, ierr)
         endif
         if (wrtavg(indxShflx)) then
           lvar=lenstr(vname(1,indxShflx))
@@ -3389,11 +3313,11 @@
             goto 99
           endif
         endif
-        if (wrtavg(indxDiff)) then
-          lvar=lenstr(vname(1,indxDiff))
-          ierr=nf_inq_varid (ncid, vname(1,indxDiff)(1:lvar), avgDiff)
+        if (wrtavg(indxVisc)) then
+          lvar=lenstr(vname(1,indxVisc))
+          ierr=nf_inq_varid (ncid, vname(1,indxVisc)(1:lvar), avgVisc)
           if (ierr .ne. nf_noerr) then
-            write(stdout,1) vname(1,indxDiff)(1:lvar), avgname(1:lstr)
+            write(stdout,1) vname(1,indxVisc)(1:lvar), avgname(1:lstr)
             goto 99
           endif
         endif
@@ -3418,22 +3342,6 @@
           ierr=nf_inq_varid (ncid,vname(1,indxAks)(1:lvar), avgAks)
           if (ierr .ne. nf_noerr) then
             write(stdout,1) vname(1,indxAks)(1:lvar), avgname(1:lstr)
-            goto 99
-          endif
-        endif
-        if (wrtavg(indxHbl)) then
-          lvar=lenstr(vname(1,indxHbl))
-          ierr=nf_inq_varid (ncid,vname(1,indxHbl)(1:lvar), avgHbl)
-          if (ierr .ne. nf_noerr) then
-          write(stdout,1) vname(1,indxHbl)(1:lvar), avgname(1:lstr)
-            goto 99
-          endif
-        endif
-        if (wrtavg(indxHbbl)) then
-          lvar=lenstr(vname(1,indxHbbl))
-          ierr=nf_inq_varid (ncid,vname(1,indxHbbl)(1:lvar), avgHbbl)
-          if (ierr .ne. nf_noerr) then
-          write(stdout,1) vname(1,indxHbbl)(1:lvar), avgname(1:lstr)
             goto 99
           endif
         endif

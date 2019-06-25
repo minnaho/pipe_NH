@@ -1,18 +1,20 @@
       subroutine t3dbc_tile(Istr,Iend,Jstr,Jend,indx,itrc,grad)
       implicit none
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -33,50 +35,48 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
       parameter (ntrc_diavrt=0)
       parameter (ntrc_diaek=0)
       parameter (ntrc_surf=0)
-      real h(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real hinv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real f(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real fomn(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real h(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real hinv(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real f(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real fomn(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /grid_h/h /grid_hinv/hinv /grid_f/f /grid_fomn/fomn
-      real angler(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real angler(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /grid_angler/angler
-      real latr(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonr(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real latu(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonu(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real latv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      common /grid_latr/latr /grid_lonr/lonr
-      common /grid_latu/latu /grid_lonu/lonu
-      common /grid_latv/latv /grid_lonv/lonv
-      real pm(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pm_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pm_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real xp(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real xr(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real yp(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real yr(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      common /grid_xr/xr /grid_xp/xp /grid_yp/yp /grid_yr/yr
+      real pm(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pm_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pm_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_pm/pm    /metrics_pn/pn
       common /metrics_omr/om_r /metrics_on_r/on_r
       common /metrics_omu/om_u /metrics_on_u/on_u
@@ -84,60 +84,76 @@
       common /metrics_omp/om_p /metrics_on_p/on_p
       common /metrics_pnu/pn_u /metrics_pmv/pm_v
       common /metrics_pmu/pm_u /metrics_pnv/pn_v
-      real dmde(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real dndx(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real dmde(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real dndx(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_dmde/dmde    /metrics_dndx/dndx
-      real pmon_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmon_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmon_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real grdscl(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real pmon_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmon_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmon_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real grdscl(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_pmon_p/pmon_p /metrics_pnom_p/pnom_p
       common /metrics_pmon_r/pmon_r /metrics_pnom_r/pnom_r
       common /metrics_pmon_u/pmon_u /metrics_pnom_v/pnom_v
       common /metrics_grdscl/grdscl
-      real rmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real umask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real vmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmask2(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real rmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real umask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real vmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmask2(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /mask_r/rmask
       common /mask_p/pmask
       common /mask_u/umask
       common /mask_v/vmask
       common /mask_p2/pmask2
-      real u(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real v(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real t(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3,NT)
+      real u(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real v(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real t(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3,NT)
       common /ocean_u/u /ocean_v/v /ocean_t/t
-      real Hz(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hz_bak(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_w(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Huon(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hvom(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real Hz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hz_bak(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_w(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Huon(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hvom(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /grid_Hz_bak/Hz_bak /grid_zw/z_w /grid_Huon/Huon
       common /grid_Hvom/Hvom
-      real We(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Wi(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
+      real We(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Wi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
       common /grid_Hz/Hz /grid_zr/z_r /grid_We/We
       common /grid_Wi/Wi
-      real rho1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real rho(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real wz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,3)
+      real nhdu(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdv(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdw(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,2)
+      real dzdxi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real dzdeta(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real Hz_half(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      common /ocean_wz/wz
+      common /ocean_nhdu/nhdu
+      common /ocean_nhdv/nhdv
+      common /ocean_nhdw/nhdw
+      common /ocean_dzdxi/dzdxi
+      common /ocean_dzdeta/dzdeta
+      common /grid_Hz_half/Hz_half
+      real rho1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real rho(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_rho1/rho1 /ocean_rho/rho
-      real qp1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real qp1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_qp1/qp1
       real qp2
       parameter (qp2=0.0000172D0)
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -147,7 +163,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -162,13 +177,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -178,9 +195,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -208,117 +222,78 @@
       parameter (spval=-9999.0D0)
       logical mask_val
       parameter (mask_val = .true.)
-      real bry_time(2)
-      common /bry_indices_array/ bry_time
-      real bry_cycle
-      common /bry_indices_real/ bry_cycle
-      integer*4 bry_id, bry_time_id, bry_ncycle, bry_rec, itbry, ntbry
-      common /bry_indices_integer/ bry_id, bry_time_id, bry_ncycle,
-     &                             bry_rec, itbry, ntbry
-      integer*4 zetabry_west_id
-      common /zeta_west_id/ zetabry_west_id
-      integer*4 ubarbry_west_id, vbarbry_west_id
-      common /ubar_west_id/ ubarbry_west_id, vbarbry_west_id
-      integer*4 ubry_west_id, vbry_west_id
-      common /u_west_id/ ubry_west_id, vbry_west_id
-      integer*4 tbry_west_id(NT)
-      common /t_west_id/ tbry_west_id
-      integer*4 zetabry_east_id
-      common /zeta_east_id/ zetabry_east_id
-      integer*4 ubarbry_east_id, vbarbry_east_id
-      common /ubar_east_id/ ubarbry_east_id, vbarbry_east_id
-      integer*4 ubry_east_id, vbry_east_id
-      common /u_east_id/ ubry_east_id, vbry_east_id
-      integer*4 tbry_east_id(NT)
-      common /t_east_id/ tbry_east_id
-      integer*4 zetabry_south_id
-      common /zeta_south_id/ zetabry_south_id
-      integer*4 ubarbry_south_id, vbarbry_south_id
-      common /ubar_south_id/ ubarbry_south_id, vbarbry_south_id
-      integer*4 ubry_south_id, vbry_south_id
-      common /u_south_id/ ubry_south_id, vbry_south_id
-      integer*4 tbry_south_id(NT)
-      common /t_south_id/ tbry_south_id
-      integer*4 zetabry_north_id
-      common /zeta_north_id/ zetabry_north_id
-      integer*4 ubarbry_north_id, vbarbry_north_id
-      common /ubar_north_id/ ubarbry_north_id, vbarbry_north_id
-      integer*4 ubry_north_id, vbry_north_id
-      common /u_north_id/ ubry_north_id, vbry_north_id
-      integer*4 tbry_north_id(NT)
-      common /t_north_id/ tbry_north_id
-      real zetabry_west(-1:Mm+2+padd_E),
-     &    zetabry_west_dt(-1:Mm+2+padd_E,2)
+      real zetabry_west(-2:Mm+3+padd_E),
+     &    zetabry_west_dt(-2:Mm+3+padd_E,2)
       common /bry_zeta_west/ zetabry_west, zetabry_west_dt
-      real ubarbry_west(-1:Mm+2+padd_E),
-     &    ubarbry_west_dt(-1:Mm+2+padd_E,2)
-     &    ,vbarbry_west(-1:Mm+2+padd_E),
-     &    vbarbry_west_dt(-1:Mm+2+padd_E,2)
+      real ubarbry_west(-2:Mm+3+padd_E),
+     &    ubarbry_west_dt(-2:Mm+3+padd_E,2)
+     &    ,vbarbry_west(-2:Mm+3+padd_E),
+     &    vbarbry_west_dt(-2:Mm+3+padd_E,2)
       common /bry_ubar_west/ ubarbry_west, ubarbry_west_dt,
      &                       vbarbry_west, vbarbry_west_dt
-      real ubry_west(-1:Mm+2+padd_E,N),
-     &    ubry_west_dt(-1:Mm+2+padd_E,N,2)
-     &    ,vbry_west(-1:Mm+2+padd_E,N),
-     &    vbry_west_dt(-1:Mm+2+padd_E,N,2)
+      real ubry_west(-2:Mm+3+padd_E,N),
+     &    ubry_west_dt(-2:Mm+3+padd_E,N,2)
+     &    ,vbry_west(-2:Mm+3+padd_E,N),
+     &    vbry_west_dt(-2:Mm+3+padd_E,N,2)
       common /bry_u_west/ ubry_west, ubry_west_dt,
      &                    vbry_west, vbry_west_dt
-      real tbry_west(-1:Mm+2+padd_E,N,NT),
-     &    tbry_west_dt(-1:Mm+2+padd_E,N,2,NT)
-      common /bry_t_west/ tbry_west, tbry_west_dt
-      real zetabry_east(-1:Mm+2+padd_E),
-     &    zetabry_east_dt(-1:Mm+2+padd_E,2)
+      real wbry_west(-2:Mm+3+padd_E,N),
+     &    wbry_west_dt(-2:Mm+3+padd_E,N,2)
+      common /bry_w_west/ wbry_west, wbry_west_dt
+      real zetabry_east(-2:Mm+3+padd_E),
+     &    zetabry_east_dt(-2:Mm+3+padd_E,2)
       common /bry_zeta_east/ zetabry_east, zetabry_east_dt
-      real ubarbry_east(-1:Mm+2+padd_E),
-     &    ubarbry_east_dt(-1:Mm+2+padd_E,2)
-     &    ,vbarbry_east(-1:Mm+2+padd_E),
-     &    vbarbry_east_dt(-1:Mm+2+padd_E,2)
+      real ubarbry_east(-2:Mm+3+padd_E),
+     &    ubarbry_east_dt(-2:Mm+3+padd_E,2)
+     &    ,vbarbry_east(-2:Mm+3+padd_E),
+     &    vbarbry_east_dt(-2:Mm+3+padd_E,2)
       common /bry_ubar_east/ ubarbry_east, ubarbry_east_dt,
      &                       vbarbry_east, vbarbry_east_dt
-      real ubry_east(-1:Mm+2+padd_E,N),
-     &    ubry_east_dt(-1:Mm+2+padd_E,N,2)
-     &    ,vbry_east(-1:Mm+2+padd_E,N),
-     &    vbry_east_dt(-1:Mm+2+padd_E,N,2)
+      real ubry_east(-2:Mm+3+padd_E,N),
+     &    ubry_east_dt(-2:Mm+3+padd_E,N,2)
+     &    ,vbry_east(-2:Mm+3+padd_E,N),
+     &    vbry_east_dt(-2:Mm+3+padd_E,N,2)
       common /bry_u_east/ ubry_east, ubry_east_dt,
      &                    vbry_east, vbry_east_dt
-      real tbry_east(-1:Mm+2+padd_E,N,NT),
-     &    tbry_east_dt(-1:Mm+2+padd_E,N,2,NT)
-      common /bry_t_east/ tbry_east, tbry_east_dt
-      real zetabry_south(-1:Lm+2+padd_X),
-     &    zetabry_south_dt(-1:Lm+2+padd_X,2)
+      real wbry_east(-2:Mm+3+padd_E,N),
+     &    wbry_east_dt(-2:Mm+3+padd_E,N,2)
+      common /bry_w_east/ wbry_east, wbry_east_dt
+      real zetabry_south(-2:Lm+3+padd_X),
+     &    zetabry_south_dt(-2:Lm+3+padd_X,2)
       common /bry_zeta_south/ zetabry_south, zetabry_south_dt
-      real ubarbry_south(-1:Lm+2+padd_X),
-     &    ubarbry_south_dt(-1:Lm+2+padd_X,2)
-     &    ,vbarbry_south(-1:Lm+2+padd_X),
-     &    vbarbry_south_dt(-1:Lm+2+padd_X,2)
+      real ubarbry_south(-2:Lm+3+padd_X),
+     &    ubarbry_south_dt(-2:Lm+3+padd_X,2)
+     &    ,vbarbry_south(-2:Lm+3+padd_X),
+     &    vbarbry_south_dt(-2:Lm+3+padd_X,2)
       common /bry_ubar_south/ ubarbry_south, ubarbry_south_dt,
      &                        vbarbry_south, vbarbry_south_dt
-      real ubry_south(-1:Lm+2+padd_X,N),
-     &    ubry_south_dt(-1:Lm+2+padd_X,N,2)
-     &    ,vbry_south(-1:Lm+2+padd_X,N),
-     &    vbry_south_dt(-1:Lm+2+padd_X,N,2)
+      real ubry_south(-2:Lm+3+padd_X,N),
+     &    ubry_south_dt(-2:Lm+3+padd_X,N,2)
+     &    ,vbry_south(-2:Lm+3+padd_X,N),
+     &    vbry_south_dt(-2:Lm+3+padd_X,N,2)
       common /bry_u_south/ ubry_south, ubry_south_dt,
      &                     vbry_south, vbry_south_dt
-      real tbry_south(-1:Lm+2+padd_X,N,NT),
-     &    tbry_south_dt(-1:Lm+2+padd_X,N,2,NT)
-      common /bry_t_south/ tbry_south, tbry_south_dt
-      real zetabry_north(-1:Lm+2+padd_X),
-     &    zetabry_north_dt(-1:Lm+2+padd_X,2)
+      real wbry_south(-2:Lm+3+padd_X,N),
+     &    wbry_south_dt(-2:Lm+3+padd_X,N,2)
+      common /bry_w_south/ wbry_south, wbry_south_dt
+      real zetabry_north(-2:Lm+3+padd_X),
+     &    zetabry_north_dt(-2:Lm+3+padd_X,2)
       common /bry_zeta_north/ zetabry_north, zetabry_north_dt
-      real ubarbry_north(-1:Lm+2+padd_X),
-     &    ubarbry_north_dt(-1:Lm+2+padd_X,2)
-     &    ,vbarbry_north(-1:Lm+2+padd_X),
-     &    vbarbry_north_dt(-1:Lm+2+padd_X,2)
+      real ubarbry_north(-2:Lm+3+padd_X),
+     &    ubarbry_north_dt(-2:Lm+3+padd_X,2)
+     &    ,vbarbry_north(-2:Lm+3+padd_X),
+     &    vbarbry_north_dt(-2:Lm+3+padd_X,2)
       common /bry_ubar_north/ ubarbry_north, ubarbry_north_dt,
      &                        vbarbry_north, vbarbry_north_dt
-      real ubry_north(-1:Lm+2+padd_X,N),
-     &    ubry_north_dt(-1:Lm+2+padd_X,N,2)
-     &    ,vbry_north(-1:Lm+2+padd_X,N),
-     &    vbry_north_dt(-1:Lm+2+padd_X,N,2)
+      real ubry_north(-2:Lm+3+padd_X,N),
+     &    ubry_north_dt(-2:Lm+3+padd_X,N,2)
+     &    ,vbry_north(-2:Lm+3+padd_X,N),
+     &    vbry_north_dt(-2:Lm+3+padd_X,N,2)
       common /bry_u_north/ ubry_north, ubry_north_dt,
      &                     vbry_north, vbry_north_dt
-      real tbry_north(-1:Lm+2+padd_X,N,NT),
-     &    tbry_north_dt(-1:Lm+2+padd_X,N,2,NT)
-      common /bry_t_north/ tbry_north, tbry_north_dt
+      real wbry_north(-2:Lm+3+padd_X,N),
+     &    wbry_north_dt(-2:Lm+3+padd_X,N,2)
+      common /bry_w_north/ wbry_north, wbry_north_dt
       integer*4 Istr,Iend,Jstr,Jend,indx,itrc,i,j,k
       real    grad(Istr-2:Iend+2,Jstr-2:Jend+2)
       real    eps, cff,
@@ -351,37 +326,139 @@
       else
         JendR=Jend
       endif
-      tau_in=dt*tauT_in
-      tau_out=dt*tauT_out
       if (.not.WEST_INTER) then
         do k=1,N
+          do j=Jstr,Jend+1
+            grad(Istr-1,j)=( t(Istr-1,j  ,k,nstp,itrc)
+     &                      -t(Istr-1,j-1,k,nstp,itrc))
+     &                                 *vmask(Istr-1,j)
+            grad(Istr  ,j)=( t(Istr  ,j  ,k,nstp,itrc)
+     &                      -t(Istr  ,j-1,k,nstp,itrc))
+     &                                   *vmask(Istr,j)
+          enddo
           do j=Jstr,Jend
-              t(Istr-1,j,k,indx,itrc)=tbry_west(j,k,itrc)
-     &                                       *rmask(Istr-1,j)
-         enddo
+            dft=t(Istr,j,k,nstp,itrc)-t(Istr  ,j,k,indx,itrc)
+            dfx=t(Istr,j,k,indx,itrc)-t(Istr+1,j,k,indx,itrc)
+            if (dfx*dft .lt. 0.D0) then
+              dft=0.D0
+            endif
+            if (dft*(grad(Istr,j)+grad(Istr,j+1)) .gt. 0.D0) then
+              dfy=grad(Istr,j)
+            else
+              dfy=grad(Istr,j+1)
+            endif
+            cff=max(dfx*dfx+dfy*dfy, eps)
+            cx=dft*dfx
+            cy=min(cff,max(dft*dfy,-cff))
+            t(Istr-1,j,k,indx,itrc)=( cff*t(Istr-1,j,k,nstp,itrc)
+     &                                   +cx*t(Istr,j,k,indx,itrc)
+     &                                -max(cy,0.D0)*grad(Istr-1,j  )
+     &                                -min(cy,0.D0)*grad(Istr-1,j+1)
+     &                                                 )/(cff+cx)
+            t(Istr-1,j,k,indx,itrc)=t(Istr-1,j,k,indx,itrc)
+     &                                      *rmask(Istr-1,j)
+          enddo
         enddo
       endif
       if (.not.EAST_INTER) then
         do k=1,N
+          do j=Jstr,Jend+1
+           grad(Iend  ,j)=( t(Iend  ,j  ,k,nstp,itrc)
+     &                     -t(Iend  ,j-1,k,nstp,itrc))
+     &                                  *vmask(Iend,j)
+           grad(Iend+1,j)=( t(Iend+1,j  ,k,nstp,itrc)
+     &                     -t(Iend+1,j-1,k,nstp,itrc))
+     &                                *vmask(Iend+1,j)
+          enddo
           do j=Jstr,Jend
-            t(Iend+1,j,k,indx,itrc)=tbry_east(j,k,itrc)
-     &                                   *rmask(Iend+1,j)
+            dft=t(Iend,j,k,nstp,itrc)-t(Iend  ,j,k,indx,itrc)
+            dfx=t(Iend,j,k,indx,itrc)-t(Iend-1,j,k,indx,itrc)
+            if (dfx*dft .lt. 0.D0) then
+              dft=0.D0
+            endif
+            if (dft*(grad(Iend,j)+grad(Iend,j+1)) .gt. 0.D0) then
+              dfy=grad(Iend,j)
+            else
+              dfy=grad(Iend,j+1)
+            endif
+            cff=max(dfx*dfx+dfy*dfy, eps)
+            cx=dft*dfx
+            cy=min(cff,max(dft*dfy,-cff))
+            t(Iend+1,j,k,indx,itrc)=( cff*t(Iend+1,j,k,nstp,itrc)
+     &                                   +cx*t(Iend,j,k,indx,itrc)
+     &                                -max(cy,0.D0)*grad(Iend+1,j  )
+     &                                -min(cy,0.D0)*grad(Iend+1,j+1)
+     &                                                 )/(cff+cx)
+            t(Iend+1,j,k,indx,itrc)=t(Iend+1,j,k,indx,itrc)
+     &                                     *rmask(Iend+1,j)
           enddo
         enddo
       endif
       if (.not.SOUTH_INTER) then
         do k=1,N
+          do i=Istr,Iend+1
+            grad(i,Jstr  )=( t(i  ,Jstr  ,k,nstp,itrc)
+     &                      -t(i-1,Jstr  ,k,nstp,itrc))
+     &                                   *umask(i,Jstr)
+            grad(i,Jstr-1)=( t(i  ,Jstr-1,k,nstp,itrc)
+     &                      -t(i-1,Jstr-1,k,nstp,itrc))
+     &                                *umask(i,Jstr-1)
+          enddo
           do i=Istr,Iend
-            t(i,Jstr-1,k,indx,itrc)=tbry_south(i,k,itrc)
-     &                                   *rmask(i,Jstr-1)
+            dft=t(i,Jstr,k,nstp,itrc)-t(i,Jstr  ,k,indx,itrc)
+            dfx=t(i,Jstr,k,indx,itrc)-t(i,Jstr+1,k,indx,itrc)
+            if (dfx*dft .lt. 0.D0) then
+              dft=0.D0
+            endif
+            if (dft*(grad(i,Jstr)+grad(i+1,Jstr)) .gt. 0.D0) then
+              dfy=grad(i,Jstr)
+            else
+              dfy=grad(i+1,Jstr)
+            endif
+            cff=max(dfx*dfx+dfy*dfy, eps)
+            cx=dft*dfx
+            cy=min(cff,max(dft*dfy,-cff))
+            t(i,Jstr-1,k,indx,itrc)=( cff*t(i,Jstr-1,k,nstp,itrc)
+     &                                   +cx*t(i,Jstr,k,indx,itrc)
+     &                                -max(cy,0.D0)*grad(i  ,Jstr-1)
+     &                                -min(cy,0.D0)*grad(i+1,Jstr-1)
+     &                                                 )/(cff+cx)
+            t(i,Jstr-1,k,indx,itrc)=t(i,Jstr-1,k,indx,itrc)
+     &                                     *rmask(i,Jstr-1)
           enddo
         enddo
       endif
       if (.not.NORTH_INTER) then
         do k=1,N
+          do i=Istr,Iend+1
+            grad(i,Jend  )=( t(i  ,Jend  ,k,nstp,itrc)
+     &                      -t(i-1,Jend  ,k,nstp,itrc))
+     &                                   *umask(i,Jend)
+            grad(i,Jend+1)=( t(i  ,Jend+1,k,nstp,itrc)
+     &                      -t(i-1,Jend+1,k,nstp,itrc))
+     &                                 *umask(i,Jend+1)
+          enddo
           do i=Istr,Iend
-            t(i,Jend+1,k,indx,itrc)=tbry_north(i,k,itrc)
-     &                                   *rmask(i,Jend+1)
+            dft=t(i,Jend,k,nstp,itrc)-t(i,Jend  ,k,indx,itrc)
+            dfx=t(i,Jend,k,indx,itrc)-t(i,Jend-1,k,indx,itrc)
+            if (dfx*dft .lt. 0.D0) then
+              dft=0.D0
+            endif
+            if (dft*(grad(i,Jend)+grad(i+1,Jend)) .gt. 0.D0) then
+              dfy=grad(i,Jend)
+            else
+              dfy=grad(i+1,Jend)
+            endif
+            cff=max(dfx*dfx+dfy*dfy, eps)
+            cx=dft*dfx
+            cy=min(cff,max(dft*dfy,-cff))
+            t(i,Jend+1,k,indx,itrc)=( cff*t(i,Jend+1,k,nstp,itrc)
+     &                                 +cx*t(i,Jend  ,k,indx,itrc)
+     &                                -max(cy,0.D0)*grad(i  ,Jend+1)
+     &                                -min(cy,0.D0)*grad(i+1,Jend+1)
+     &                                                 )/(cff+cx)
+            t(i,Jend+1,k,indx,itrc)=t(i,Jend+1,k,indx,itrc)
+     &                                     *rmask(i,Jend+1)
           enddo
         enddo
       endif

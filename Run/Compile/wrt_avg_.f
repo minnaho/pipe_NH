@@ -3,18 +3,20 @@
      &  , start(2), count(2), ibuff(4), nf_fwrite, type
      &            , itrc
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -35,14 +37,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -52,10 +56,12 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -65,7 +71,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -80,13 +85,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -96,9 +103,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -126,42 +130,35 @@
       parameter (spval=-9999.0D0)
       logical mask_val
       parameter (mask_val = .true.)
-      real zeta_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real ubar_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real vbar_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real zeta_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real ubar_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real vbar_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_zeta/zeta_avg
      &       /avg_ubar/ubar_avg
      &       /avg_vbar/vbar_avg
-      real bostr_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real bostr_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_bostr/bostr_avg
-      real wstr_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real wstr_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_wstr/wstr_avg
-      real sustr_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real sustr_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_sustr/sustr_avg
-      real svstr_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real svstr_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_svstr/svstr_avg
-      real srflx_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real srflx_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /avg_srflx/srflx_avg
-      real u_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real v_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real t_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,NT)
-      real rho_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real omega_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real w_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real u_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real v_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real t_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,NT)
+      real rho_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real omega_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real w_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /avg_u/u_avg /avg_v/v_avg /avg_t/t_avg
      &       /avg_rho/rho_avg /avg_omega/omega_avg
      &       /avg_w/w_avg
-      real stflx_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,NT)
+      real stflx_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,NT)
       common /avg_stflx/stflx_avg
-      real hbl_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      common /avg_hbl/hbl_avg
-      real hbbl_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      common /avg_hbbl/hbbl_avg
-      real diff3d_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      common /avg_diff3d/diff3d_avg
-      real Akv_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Akt_avg(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N,2)
-      common /avg_Akv/Akv_avg /avg_Akt/Akt_avg
+      real visc3d_avg(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      common /avg_visc3d/visc3d_avg
       integer*4 filetype_his, filetype_avg
      &       ,filetype_dia, filetype_dia_avg
      &       ,filetype_diaM, filetype_diaM_avg
@@ -177,6 +174,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -188,10 +187,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -204,8 +199,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -290,36 +283,32 @@
      &                                ,  avgname
      &                                ,   bry_file
      &                      ,  vname
-      real h(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real hinv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real f(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real fomn(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real h(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real hinv(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real f(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real fomn(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /grid_h/h /grid_hinv/hinv /grid_f/f /grid_fomn/fomn
-      real angler(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real angler(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /grid_angler/angler
-      real latr(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonr(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real latu(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonu(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real latv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real lonv(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      common /grid_latr/latr /grid_lonr/lonr
-      common /grid_latu/latu /grid_lonu/lonu
-      common /grid_latv/latv /grid_lonv/lonv
-      real pm(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real om_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real on_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pm_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pm_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pn_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real xp(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real xr(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real yp(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real yr(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      common /grid_xr/xr /grid_xp/xp /grid_yp/yp /grid_yr/yr
+      real pm(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real om_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real on_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pm_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pm_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pn_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_pm/pm    /metrics_pn/pn
       common /metrics_omr/om_r /metrics_on_r/on_r
       common /metrics_omu/om_u /metrics_on_u/on_u
@@ -327,56 +316,74 @@
       common /metrics_omp/om_p /metrics_on_p/on_p
       common /metrics_pnu/pn_u /metrics_pmv/pm_v
       common /metrics_pmu/pm_u /metrics_pnv/pn_v
-      real dmde(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real dndx(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real dmde(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real dndx(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_dmde/dmde    /metrics_dndx/dndx
-      real pmon_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmon_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmon_u(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_p(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pnom_v(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real grdscl(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real pmon_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmon_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmon_u(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_p(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pnom_v(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real grdscl(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /metrics_pmon_p/pmon_p /metrics_pnom_p/pnom_p
       common /metrics_pmon_r/pmon_r /metrics_pnom_r/pnom_r
       common /metrics_pmon_u/pmon_u /metrics_pnom_v/pnom_v
       common /metrics_grdscl/grdscl
-      real rmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real umask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real vmask(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
-      real pmask2(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real rmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real umask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real vmask(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real pmask2(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /mask_r/rmask
       common /mask_p/pmask
       common /mask_u/umask
       common /mask_v/vmask
       common /mask_p2/pmask2
-      real zeta(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
-      real ubar(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
-      real vbar(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
+      real zeta(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
+      real ubar(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
+      real vbar(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
       common /ocean_zeta/zeta
       common /ocean_ubar/ubar
       common /ocean_vbar/vbar
-      real u(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real v(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real t(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3,NT)
+      real nh_ubar(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real nh_vbar(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real nh_wcor(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      common /nh_wcor/nh_ubar,nh_vbar,nh_wcor
+      real u(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real v(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real t(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3,NT)
       common /ocean_u/u /ocean_v/v /ocean_t/t
-      real Hz(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hz_bak(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_w(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Huon(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hvom(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real Hz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hz_bak(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_w(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Huon(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hvom(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /grid_Hz_bak/Hz_bak /grid_zw/z_w /grid_Huon/Huon
       common /grid_Hvom/Hvom
-      real We(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Wi(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
+      real We(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Wi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
       common /grid_Hz/Hz /grid_zr/z_r /grid_We/We
       common /grid_Wi/Wi
-      real rho1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real rho(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real wz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,3)
+      real nhdu(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdv(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdw(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,2)
+      real dzdxi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real dzdeta(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real Hz_half(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      common /ocean_wz/wz
+      common /ocean_nhdu/nhdu
+      common /ocean_nhdv/nhdv
+      common /ocean_nhdw/nhdw
+      common /ocean_dzdxi/dzdxi
+      common /ocean_dzdeta/dzdeta
+      common /grid_Hz_half/Hz_half
+      real rho1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real rho(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_rho1/rho1 /ocean_rho/rho
-      real qp1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real qp1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_qp1/qp1
       real qp2
       parameter (qp2=0.0000172D0)
@@ -384,13 +391,13 @@
       INTEGER*4 :: ocean_grid_comm
       common /cpl_comm/ ocean_grid_comm
 !$AGRIF_END_DO_NOT_TREAT
-      real work(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
+      real work(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
       common /work3d/ work
-      real workr(-1:Lm+2+padd_X,-1:Mm+2+padd_E,1:N)
+      real workr(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
       common /work3d_r/ workr
-      real work2d(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real work2d(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /work2d/ work2d
-      real work2d2(-1:Lm+2+padd_X,-1:Mm+2+padd_E)
+      real work2d2(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
       common /work2d2/ work2d2
       integer*4 nf_byte
       integer*4 nf_int1
@@ -1313,35 +1320,10 @@
          workr=w_avg
          call fillvalue3d(workr,ncidavg,avgW,indxW,record,r3dvar,type)
       endif
-      if (wrtavg(indxDiff)) then
-         workr=diff3d_avg
-         call fillvalue3d(workr,ncidavg,avgDiff,indxDiff,
+      if (wrtavg(indxVisc)) then
+         workr=visc3d_avg
+         call fillvalue3d(workr,ncidavg,avgVisc,indxVisc,
      &        record,r3dvar,type)
-      endif
-      if (wrtavg(indxAkv)) then
-         work=Akv_avg
-         call fillvalue3d_w(work,ncidavg,avgAkv,indxAkv,
-     &        record,w3dvar,type)
-      endif
-      if (wrtavg(indxAkt)) then
-         work=Akt_avg(:,:,:,itemp)
-         call fillvalue3d_w(work,ncidavg,avgAkt,indxAkt,
-     &        record,w3dvar,type)
-      endif
-      if (wrtavg(indxAks)) then
-         work=Akt_avg(:,:,:,isalt)
-         call fillvalue3d_w(work,ncidavg,avgAks,indxAks,
-     &        record,w3dvar,type)
-      endif
-      if (wrtavg(indxHbl)) then
-         work2d=hbl_avg
-         call fillvalue2d(work2d,ncidavg,avgHbl,indxHbl,
-     &        record,r2dvar,type)
-      endif
-      if (wrtavg(indxHbbl)) then
-         work2d=hbbl_avg
-         call fillvalue2d(work2d,ncidavg,avgHbbl,indxHbbl,
-     &        record,r2dvar,type)
       endif
       if (wrtavg(indxShflx)) then
          work2d=stflx_avg(:,:,itemp)

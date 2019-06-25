@@ -81,6 +81,10 @@ C$    integer omp_get_thread_num
                      depth=5000.
                      f0=1.E-4 
                      beta=2.E-11
+# elif defined PIPE
+                     depth=60
+                     f0=1.E-4
+                     beta=0
 # elif defined CANYON_A || defined CANYON_B
                      depth=4000.
                      f0=1.E-4
@@ -183,6 +187,7 @@ C$    integer omp_get_thread_num
                      depth=???
                      f0=???
                      beta=???
+
 # endif
 # ifdef AGRIF
       if (Agrif_Root()) then
@@ -190,6 +195,9 @@ C$    integer omp_get_thread_num
 # if defined BASIN
                      Length_XI =3600.0e+3
                      Length_ETA=2800.0e+3
+# elif defined PIPE
+                     Length_XI =1536                  
+                     Length_ETA=1536                    
 # elif defined CANYON_A || defined CANYON_B
                      Length_XI =128.0e+3
                      Length_ETA=96.0e+3
@@ -290,6 +298,7 @@ C$    integer omp_get_thread_num
                      Length_XI =???
                      Length_ETA=??? 
 # endif
+
 # ifdef AGRIF
       else
 !
@@ -376,6 +385,15 @@ CR     &                                'x0=',x0, 'y0=',y0, mynode
       do j=JstrR,JendR
         do i=IstrR,IendR
           h(i,j)=depth
+        enddo
+      enddo
+# elif defined PIPE
+      do j=JstrR,JendR
+        do i=IstrR,IendR
+          h(i,j)=depth    ! flat bottom
+#  ifdef MASKING
+          rmask(i,j)=1.0
+#  endif
         enddo
       enddo
 # elif defined CANYON_A || defined CANYON_B
@@ -643,7 +661,10 @@ CR     &                                'x0=',x0, 'y0=',y0, mynode
 # else
       do j=JstrR,JendR
         do i=IstrR,IendR
-          h(i,j)=???
+!          h(i,j)=???
+          h(i,j)=depth
+! testing flat bottom no land
+          rmask(i,j)=1.0
         enddo
       enddo
 # endif

@@ -94,6 +94,12 @@
 # include "grid.h"
 # include "ocean3d.h"
 # include "scalars.h"
+
+# ifdef PIPE
+      real   ,dimension(0:N) :: Q_int
+      integer is,iii,jjj
+#  include "sources.h"
+# endif
 !
 # ifdef MPI
 #  define LOCALLM Lmmpi
@@ -107,6 +113,7 @@
 !
 !--------------------------------------------------------
 !
+
 # ifdef VADV_ADAPT_IMP
       gamma = 0.08333333333333
       if(nrhs.eq.3) then
@@ -169,6 +176,34 @@
 # endif
           enddo
         enddo
+
+# ifdef PSOURCE
+#  ifdef PIPE
+      do is=1,Nsrc
+#   ifdef MPI
+        iii=Isrc_mpi(is,mynode)
+        jjj=Jsrc_mpi(is,mynode)
+#   else
+        iii=Isrc(is)
+        jjj=Jsrc(is)
+#   endif
+        if (Dsrc(is).eq.2) then
+          if (Istr.le.iii .and. iii.le.Iend+1 .and.
+     &        Jstr.le.jjj .and. jjj.le.Jend+1.and.j.eq.jjj) then
+            Q_int(1) = Qsrc(is,1)
+            do k=2,N
+              Q_int(k) = Q_int(k-1) + Qsrc(is,k)
+            enddo
+            do k=1,N
+              We(iii,jjj,k)=We(iii,jjj,k)+Q_int(k)
+            enddo
+            We(iii,jjj,0)=We(iii,jjj,0)+Q_int(1)
+          endif
+        endif
+      enddo
+#  endif /* PIPE */
+# endif /* PSOURCE */
+
 !
 !---------------------------------------------------------
 !  Subtract vertical velocities of moving S-coordinate 
@@ -237,8 +272,8 @@
           enddo
         enddo
 #endif
-
       enddo  ! j loop
+
 #ifdef VADV_ADAPT_IMP
       ! uncomment to see whether indeed there will some points with Wi neq 0
 

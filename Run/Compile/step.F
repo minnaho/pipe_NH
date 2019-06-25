@@ -583,7 +583,7 @@ C$OMP BARRIER
             call set_ssh (tile)
 #  endif
 # endif
-# if  defined Z_FRC_BRY  || defined M2_FRC_BRY
+# if defined Z_FRC_BRY  || defined M2_FRC_BRY
 #  ifdef ANA_BRY
             call ana_bry (tile)
 #  else

@@ -1,0 +1,66 @@
+! include file for FLAT_BOTTOM experiments for initial conditions in ana_init.F
+! summer observations from CTD data stored on Poseidon
+! (Poseidon: /data/project3/minnaho/Faycal_CTD_data)
+
+            t(i,j,1,1,isalt) =  33.411             ! bottom
+            t(i,j,2,1,isalt) =  33.395
+            t(i,j,3,1,isalt) =  33.410222222222224
+            t(i,j,4,1,isalt) =  33.428263157894726
+            t(i,j,5,1,isalt) =  33.429300000000005
+            t(i,j,6,1,isalt) =  33.4206
+            t(i,j,7,1,isalt) =  33.409699999999994
+            t(i,j,8,1,isalt) =  33.398450000000004
+            t(i,j,9,1,isalt) =  33.39005
+            t(i,j,10,1,isalt) = 33.3831
+            t(i,j,11,1,isalt) = 33.37734999999999
+            t(i,j,12,1,isalt) = 33.37044999999999
+            t(i,j,13,1,isalt) = 33.368849999999995
+            t(i,j,14,1,isalt) = 33.364999999999995
+            t(i,j,15,1,isalt) = 33.35985
+            t(i,j,16,1,isalt) = 33.35965
+            t(i,j,17,1,isalt) = 33.35875
+            t(i,j,18,1,isalt) = 33.3583
+            t(i,j,19,1,isalt) = 33.35770000000001
+            t(i,j,20,1,isalt) = 33.35960000000001
+            t(i,j,21,1,isalt) = 33.3593
+            t(i,j,22,1,isalt) = 33.361650000000004
+            t(i,j,23,1,isalt) = 33.36364999999999
+            t(i,j,24,1,isalt) = 33.3642
+            t(i,j,25,1,isalt) = 33.36465
+            t(i,j,26,1,isalt) = 33.36389999999999
+            t(i,j,27,1,isalt) = 33.36149999999999
+            t(i,j,28,1,isalt) = 33.35735
+            t(i,j,29,1,isalt) = 33.3683
+            t(i,j,30,1,isalt) = 33.371750000000006
+            t(i,j,31,1,isalt) = 33.37665
+            t(i,j,32,1,isalt) = 33.38125
+            t(i,j,33,1,isalt) = 33.3891
+            t(i,j,34,1,isalt) = 33.3935
+            t(i,j,35,1,isalt) = 33.393100000000004
+            t(i,j,36,1,isalt) = 33.39355
+            t(i,j,37,1,isalt) = 33.3941
+            t(i,j,38,1,isalt) = 33.394549999999995
+            t(i,j,39,1,isalt) = 33.39569999999999
+            t(i,j,40,1,isalt) = 33.401250000000005
+            t(i,j,41,1,isalt) = 33.408300000000004
+            t(i,j,42,1,isalt) = 33.41
+            t(i,j,43,1,isalt) = 33.41435
+            t(i,j,44,1,isalt) = 33.424
+            t(i,j,45,1,isalt) = 33.43900000000001
+            t(i,j,46,1,isalt) = 33.44
+            t(i,j,47,1,isalt) = 33.4504
+            t(i,j,48,1,isalt) = 33.46094999999999
+            t(i,j,49,1,isalt) = 33.47425
+            t(i,j,50,1,isalt) = 33.48010000000001
+            t(i,j,51,1,isalt) = 33.48855
+            t(i,j,52,1,isalt) = 33.4942
+            t(i,j,53,1,isalt) = 33.498900000000006
+            t(i,j,54,1,isalt) = 33.50085
+            t(i,j,55,1,isalt) = 33.501799999999996
+            t(i,j,56,1,isalt) = 33.50135000000001
+            t(i,j,57,1,isalt) = 33.5021
+            t(i,j,58,1,isalt) = 33.503700000000016
+            t(i,j,59,1,isalt) = 33.5037
+            t(i,j,60,1,isalt) = 33.50305000000001       ! surface
+            t(i,j,k,2,isalt)=t(i,j,k,1,isalt)
+

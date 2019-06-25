@@ -48,8 +48,9 @@
 #include "ncscrum.h"
 #include "grid.h"
 #include "mpi_roms.h"
-#ifdef NHMG
 # include "ocean3d.h"
+#ifdef NHMG
+!# include "ocean3d.h"
 #endif
 #ifdef FLOATS
 # include "floats.h"

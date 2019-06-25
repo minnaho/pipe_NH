@@ -48,7 +48,7 @@
       integer Istr,Iend,Jstr,Jend, itrc, i,j,k, indx, kmld
      &       ,imin,imax,jmin,jmax,iAkt,nadv
 # ifdef PSOURCE
-     &       ,is
+     &       ,is,iii,jjj
 # endif
 # ifdef AGRIF
 # include "zoom.h"
@@ -171,43 +171,43 @@
 !----------------------------------------------------------
 !
 # ifdef PSOURCE
-          do is=1,Nsrc
+         do is=1,Nsrc
 #  ifdef MPI
            i=Isrc_mpi(is,mynode)
            j=Jsrc_mpi(is,mynode)
 #  else
-            i=Isrc(is)
-            j=Jsrc(is)
+           i=Isrc(is)
+           j=Jsrc(is)
 #  endif
-            if (Istr.le.i .and. i.le.Iend+1
+           if (Istr.le.i .and. i.le.Iend+1
      &                   .and. Jstr.le.j .and. j.le.Jend+1) then
-              if (Dsrc(is).eq.0) then
-                if (Lsrc(is,itrc)) then
+             if (Dsrc(is).eq.0) then
+               if (Lsrc(is,itrc)) then
                   FX(i,j)=Huon(i,j,k)*Tsrc(is,k,itrc)
 #  ifdef MASKING
-                else
-                  if (rmask(i,j).eq.0 .and. rmask(i-1,j).eq.1) then
+               else
+                 if (rmask(i,j).eq.0 .and. rmask(i-1,j).eq.1) then
                     FX(i,j)=Huon(i,j,k)*t(i-1,j,k,3,itrc)
-                  elseif (rmask(i,j).eq.1. .and. rmask(i-1,j).eq.0) then
+                 elseif (rmask(i,j).eq.1. .and. rmask(i-1,j).eq.0) then
                     FX(i,j)=Huon(i,j,k)*t(i  ,j,k,3,itrc)
-                  endif
+                 endif
 #  endif
-                endif
-              else
-                if (Lsrc(is,itrc)) then
-                  FE(i,j)=Hvom(i,j,k)*Tsrc(is,k,itrc)
+               endif
+             elseif (Dsrc(is).eq.1) then
+               if (Lsrc(is,itrc)) then
+                 FE(i,j)=Hvom(i,j,k)*Tsrc(is,k,itrc)
 #  ifdef MASKING
-                else
-                  if (rmask(i,j).eq.0 .and. rmask(i,j-1).eq.1) then
-                    FE(i,j)=Hvom(i,j,k)*t(i,j-1,k,3,itrc)
-                  elseif (rmask(i,j).eq.1 .and. rmask(i,j-1).eq.0) then
-                    FE(i,j)=Hvom(i,j,k)*t(i,j  ,k,3,itrc)
-                  endif
+               else
+                 if (rmask(i,j).eq.0 .and. rmask(i,j-1).eq.1) then
+                   FE(i,j)=Hvom(i,j,k)*t(i,j-1,k,3,itrc)
+                 elseif (rmask(i,j).eq.1 .and. rmask(i,j-1).eq.0) then
+                   FE(i,j)=Hvom(i,j,k)*t(i,j  ,k,3,itrc)
+                 endif
 #  endif
-                endif
-              endif
-            endif
-          enddo
+               endif
+             endif
+           endif
+         enddo
 # endif /* PSOURCE */
 !
 !----------------------------------------------------------
@@ -317,6 +317,33 @@
      &                                                      -FC(i,k-1))
             enddo
           enddo               !--> discard FC
+
+
+# ifdef PSOURCE
+          do is=1,Nsrc
+#  ifdef MPI
+            iii=Isrc_mpi(is,mynode)
+            jjj=Jsrc_mpi(is,mynode)
+#  else
+            iii=Isrc(is)
+            jjj=Jsrc(is)
+#  endif
+            if (Istr.le.iii .and. iii.le.Iend+1
+     &         .and. Jstr.le.jjj .and. jjj.le.Jend+1.and.jjj.eq.j) then
+#  ifdef PIPE
+              if (Dsrc(is).eq.2) then
+                if (Lsrc(is,itrc)) then
+                  cff =dt*pn(iii,jjj)*pm(iii,jjj)
+                  do k=1,N
+                    t(iii,jjj,k,nnew,itrc)=(t(iii,jjj,k,nnew,itrc)
+     &                                 +cff*Qsrc(is,k)*Tsrc(is,k,itrc))
+                  enddo 
+                endif
+              endif
+#  endif
+            endif
+          enddo
+# endif /* PSOURCE */
 
 # ifdef DIAGNOSTICS_TS
        do k=1,N 

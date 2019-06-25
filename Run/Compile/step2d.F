@@ -110,6 +110,10 @@ C$    trd=omp_get_thread_num()
      &        is,
 #endif
      &        imin,imax,jmin,jmax
+# if defined PIPE
+      real, dimension(PRIVATE_2D_SCRATCH_ARRAY) :: Qbar_fld
+      integer iii,jjj
+# endif
       real sum_c
       real    VMAX,VMAXL
       real zeta_new(PRIVATE_2D_SCRATCH_ARRAY),  cff,
@@ -375,6 +379,28 @@ C$OMP END MASTER
 #define rzeta  UFe
 #define rzeta2  VFe
 #define rzetaSA VFx
+
+#ifdef PSOURCE
+# ifdef PIPE
+      Qbar_fld = 0.0
+      do is=1,Nsrc 
+#  ifdef MPI
+        iii=Isrc_mpi(is,mynode)
+        jjj=Jsrc_mpi(is,mynode)
+#  else
+        iii=Isrc(is)
+        jjj=Jsrc(is)
+#  endif
+        if (IstrR.le.iii .and. iii.le.IendR .and.
+     &      JstrR.le.jjj .and. jjj.le.JendR) then
+          if (Dsrc(is).eq.2) then
+            Qbar_fld(iii,jjj) = Qbar(is)
+          endif
+        endif
+      enddo
+# endif 
+#endif
+
 !
 !-----------------------------------------------------------------------
 ! Computes zeta(n+1)
@@ -388,6 +414,11 @@ C$OMP END MASTER
           zeta_new(i,j)=zeta(i,j,kstp) + dtfast*pm(i,j)*pn(i,j)
      &                                   *(DUon(i,j)-DUon(i+1,j  )
      &                                    +DVom(i,j)-DVom(i  ,j+1))
+#ifdef PSOURCE
+# ifdef PIPE
+     &                         +Qbar_fld(i,j)*dtfast*pm(i,j)*pn(i,j)
+# endif
+#endif
 #ifdef NBQ_CONS4
      &        - rhscine_nh(l_nh,2)*dtfast/rho0
 #endif
@@ -1978,12 +2009,12 @@ ccc          dvde = 0.5*( vrhs(i,j-1)-vrhs(i,j+1) )
 # ifdef SOLVE3D
             DU_avg1(i,j,nnew)=Qbar(is)
 # endif
-          else
+          elseif (Dsrc(is).eq.1) then
             vbar(i,j,knew)=2.*Qbar(is)/( om_v(i,j)
      &                   *(Dnew(i,j-1)+Dnew(i,j)) )
 # ifdef SOLVE3D
             DV_avg1(i,j,nnew)=Qbar(is)
-# endif
+# endif 
           endif
         endif
       enddo

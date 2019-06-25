@@ -4,6 +4,7 @@
 ! Nsrc       Number of point Sources/Sinks.
 ! Dsrc       Direction of point Sources/Sinks:  0 = along XI-;
 !                                               1 = along ETA-direction.
+!                                               2 = along s-direction
 ! Isrc,Jsrc  i,j-grid location of point Sources/Sinks,
 !              0 <= Isrc <= Lm+1;   0 =<- Jsrc <= Mm+1.
 ! Lsrc       Logical switch indicating which tracer field to apply

@@ -82,7 +82,7 @@
       implicit none
 # include "param.h"
       integer Istr,Iend,Jstr,Jend, itrc, i,j,k, indx
-     &       ,imin,imax,jmin,jmax,nadv,iAkt
+     &       ,imin,imax,jmin,jmax,nadv,iAkt, iii, jjj
 # ifdef PSOURCE
      &       ,is
 # endif
@@ -445,7 +445,8 @@
                   endif
 #  endif
                 endif
-              else
+
+              elseif (Dsrc(is).eq.1) then
                 if (Lsrc(is,itrc)) then
                   FE(i,j)=Hvom(i,j,k)*Tsrc(is,k,itrc)
 #  ifdef MASKING
@@ -527,7 +528,32 @@
 # endif
              DC(i,0)=cdt*pn(i,j)*pm(i,j)
         enddo
-        
+# ifdef PSOURCE
+#  ifdef PIPE
+       do is=1,Nsrc
+         if (Lsrc(is,itrc)) then
+#   ifdef MPI
+            iii=Isrc_mpi(is,mynode)
+            jjj=Jsrc_mpi(is,mynode)
+#   else
+            iii=Isrc(is)
+            jjj=Jsrc(is)
+#   endif
+
+            if (Istr.le.iii .and. iii.le.Iend+1
+     &         .and. Jstr.le.jjj .and. jjj.le.Jend+1.and.jjj.eq.j) then
+                cff =dt*pn(iii,jjj)*pm(iii,jjj)
+                do k=1,N
+                  t(iii,jjj,k,nnew,itrc)=(t(iii,jjj,k,nnew,itrc)
+     &                  +cff*Qsrc(is,k)*Tsrc(is,k,itrc))
+                enddo
+
+            endif
+         endif ! Dsrc=2
+       enddo  ! is
+#  endif /* PIPE */
+# endif /* PSOURCE */
+
         do itrc=1,NT
 !
 !----------------------------------------------------------------------

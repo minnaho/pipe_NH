@@ -89,6 +89,11 @@ C$    integer omp_get_thread_num
       parameter (u0=1.5)
       parameter (v0=1.2)
 #endif
+#ifdef PIPE
+      real u0,v0
+      parameter (u0=0.02)
+      parameter (v0=0.)
+#endif
 !
 #include "compute_auxiliary_bounds.h"
 !
@@ -155,6 +160,17 @@ C$    integer omp_get_thread_num
             fac=cff2 * (2.*cff3/(1.+cff3*cff3))**2
             vbar(i,j,1)=2.*fac*y*(-2.*cff1*tanh(cff1*x))
      &                                    *exp(-0.5*y*y)
+          enddo
+        enddo
+
+# elif defined PIPE
+        do j=JR_RANGE
+          do i=IR_RANGE
+            zeta(i,j,1)=(-f(i,j)*u0/g)*(yr(i,j)-el/2.)
+            ubar(i,j,1)=u0
+            ubar(i,j,2)=ubar(i,j,1)
+            vbar(i,j,1)=0.
+            vbar(i,j,2)=vbar(i,j,1)
           enddo
         enddo
 
@@ -294,7 +310,20 @@ C$    integer omp_get_thread_num
 !
       if (nrrec.eq.0) then
 !
-#  if defined THACKER
+
+#  ifdef PIPE 
+        do k=1,N
+          do j=JR_RANGE
+            do i=IR_RANGE
+              u(i,j,k,1)=0.02
+              v(i,j,k,1)=0.
+              u(i,j,k,2)=u(i,j,k,1)
+              v(i,j,k,2)=v(i,j,k,1)
+            enddo
+          enddo
+        enddo
+
+#  elif defined THACKER
         do k=1,N
           do j=JR_RANGE
             do i=IR_RANGE
@@ -382,7 +411,51 @@ C$    integer omp_get_thread_num
 !
       if (nrrec.eq.0) then
 !
-#  ifdef BASIN
+
+#  ifdef PIPE
+        do k=1,N
+          do j=JR_RANGE
+            do i=IR_RANGE 
+!#   define Z0 (-80.)
+!#   define THKNSS 50.
+!#   define Z1 0.
+!#   define STRAT 1000. 
+             ! summer conditions from observation
+!              include "fb_summer_temp_obs.h"
+             ! winter conditions from observation
+!              include "fb_winter_temp_obs.h"
+             ! summer conditions from Faycal
+!              include "fb_summer_temp_faycal.h"
+             ! winter conditions from Faycal
+!              include "fb_winter_temp_faycal.h"
+             ! idealized winter temp
+              include "ideal_winter_temp.h"
+             ! idealized summer temp
+!              include "ideal_summer_temp.h"
+
+!#   undef Z0
+!#   undef THKNSS
+!#   undef Z1
+!
+#   ifdef SALINITY
+             ! summer conditions from observation
+!              include "fb_summer_salt_obs.h"
+             ! winter conditions from observation
+!              include "fb_winter_salt_obs.h"
+             ! summer conditions from Faycal
+!              include "fb_summer_salt_faycal.h"
+             ! winter conditions from Faycal
+!              include "fb_winter_salt_faycal.h"
+             ! idealized winter salt
+              include "ideal_winter_salt.h"
+             ! idealized summer salt
+!              include "ideal_summer_salt.h"
+#   endif
+            enddo
+          enddo
+        enddo
+
+#  elif defined BASIN
         cff1=(44.690/39.382)**2
         cff2=cff1*(rho0*800./g)*(5.0e-5/((42.689/44.690)**2))
         do k=1,N
@@ -847,18 +920,21 @@ C$    integer omp_get_thread_num
                  t(i,j,k,1,itpas)=0
               endif
 #  elif defined SHOREFACE || defined RIP
-            if (h(i,j).lt.2) then
-              t(i,j,k,1,itpas)=1.
-            else
+              if (h(i,j).lt.2) then
+                t(i,j,k,1,itpas)=1.
+              else
+                t(i,j,k,1,itpas)=0
+              endif
+              t(i,j,k,2,itpas)=t(i,j,k,1,itpas)
+#  elif defined PIPE
               t(i,j,k,1,itpas)=0
-            endif
-            t(i,j,k,2,itpas)=t(i,j,k,1,itpas)
+              t(i,j,k,2,itpas)=t(i,j,k,1,itpas)
 #  else
-            if (h(i,j).lt.300) then
-              t(i,j,k,1,itpas)=1.
-            else
-              t(i,j,k,1,itpas)=0
-            endif
+              if (h(i,j).lt.300) then
+                t(i,j,k,1,itpas)=1.
+              else
+                t(i,j,k,1,itpas)=0
+              endif
 #  endif
             endif
           enddo

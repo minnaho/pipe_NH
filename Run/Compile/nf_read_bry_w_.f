@@ -1,18 +1,20 @@
       integer*4 function nf_read_bry_NS_W (A, ncid, varid, record, type)
       implicit none
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=64,  MMm0=64,  N=32)
+      parameter (LLm0=256,  MMm0=256,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=4,  NP_ETA=2,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=1)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -866,12 +868,10 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
-     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
-     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -881,9 +881,9 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-       real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &                                 , ntsavg,  navg
       logical ldefhis
       logical got_tini(NT)
       common /scalars_main/
@@ -894,9 +894,9 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
       logical synchro_flag
@@ -909,8 +909,10 @@
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       real*8 volume, avgke, avgpe, avgkp, bc_crss
+     &        , bc_flux, ubar_xs
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
+     &        , bc_flux,  ubar_xs
       real*4 CPU_time(0:31,0:NPP)
       integer*4 proc(0:31,0:NPP),trd_count
       common /timers_roms/CPU_time,proc,trd_count
@@ -946,19 +948,13 @@
       horiz_type=type-4*vert_type
       jmin=horiz_type/2
       imin=horiz_type-2*jmin
-      if (ii.gt.0) then
-        start(1)=1-imin+iminmpi
-        imin=1
-      endif
+      if (ii.gt.0) imin=1
       if (ii.eq.NP_XI-1) then
         imax=Lmmpi+1
       else
         imax=Lmmpi
       endif
-      if (jj.gt.0) then
-        start(2)=1-jmin+jminmpi
-        jmin=1
-      endif
+      if (jj.gt.0) jmin=1
       if (jj.eq.NP_ETA-1) then
         jmax=Mmmpi+1
       else
@@ -1006,18 +1002,20 @@
       integer*4 function nf_read_bry_EW_W (A, ncid, varid, record, type)
       implicit none
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=64,  MMm0=64,  N=32)
+      parameter (LLm0=256,  MMm0=256,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=4,  NP_ETA=2,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=1)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -1871,12 +1869,10 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
-     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
-     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -1886,9 +1882,9 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-       real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &                                 , ntsavg,  navg
       logical ldefhis
       logical got_tini(NT)
       common /scalars_main/
@@ -1899,9 +1895,9 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
       logical synchro_flag
@@ -1914,8 +1910,10 @@
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       real*8 volume, avgke, avgpe, avgkp, bc_crss
+     &        , bc_flux, ubar_xs
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
+     &        , bc_flux,  ubar_xs
       real*4 CPU_time(0:31,0:NPP)
       integer*4 proc(0:31,0:NPP),trd_count
       common /timers_roms/CPU_time,proc,trd_count
@@ -1951,19 +1949,13 @@
       horiz_type=type-4*vert_type
       jmin=horiz_type/2
       imin=horiz_type-2*jmin
-      if (ii.gt.0) then
-        start(1)=1-imin+iminmpi
-        imin=1
-      endif
+      if (ii.gt.0) imin=1
       if (ii.eq.NP_XI-1) then
         imax=Lmmpi+1
       else
         imax=Lmmpi
       endif
-      if (jj.gt.0) then
-        start(2)=1-jmin+jminmpi
-        jmin=1
-      endif
+      if (jj.gt.0) jmin=1
       if (jj.eq.NP_ETA-1) then
         jmax=Mmmpi+1
       else

@@ -5,18 +5,20 @@
      &        w3dgrd(3), nf_ftype, varid, ierr
       character(len=30) strtmp
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -37,14 +39,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -66,6 +70,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -77,10 +83,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -93,8 +95,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -1096,8 +1096,8 @@
      &     'bath, scalar')
       ierr=nf_put_att_text (ncid, varid, 'standard_name', 33,
      &     'model_sea_floor_depth_below_geoid')
-      ierr=nf_put_att_text (ncid, varid, 'coordinates', 15,
-     &                      'lat_rho lon_rho')
+      ierr=nf_put_att_text (ncid, varid, 'coordinates', 11,
+     &                      'x_rho y_rho')
       ierr=nf_def_var (ncid,'f', nf_ftype, 2, r2dgrd, varid)
       ierr=nf_put_att_text (ncid, varid, 'long_name',   32,
      &                        'Coriolis parameter at RHO-points')
@@ -1106,15 +1106,15 @@
      &                                        'coriolis, scalar')
       ierr=nf_put_att_text (ncid, varid, 'standard_name', 18,
      &     'coriolis_parameter')
-      ierr=nf_put_att_text (ncid, varid, 'coordinates', 15,
-     &                      'lat_rho lon_rho')
+      ierr=nf_put_att_text (ncid, varid, 'coordinates', 11,
+     &                      'x_rho y_rho')
       ierr=nf_def_var (ncid, 'pm', nf_ftype, 2, r2dgrd, varid)
       ierr=nf_put_att_text (ncid, varid, 'long_name', 35,
      &                      'curvilinear coordinates metric in XI')
       ierr=nf_put_att_text (ncid, varid, 'units',  7,    'meter-1')
       ierr=nf_put_att_text (ncid, varid, 'field', 10, 'pm, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'coordinates', 15,
-     &                      'lat_rho lon_rho')
+      ierr=nf_put_att_text (ncid, varid, 'coordinates', 11,
+     &                      'x_rho y_rho')
       ierr=nf_put_att_text (ncid, varid, 'standard_name', 22,
      &                      'inverse_of_cell_x_size')
       ierr=nf_def_var (ncid, 'pn', nf_ftype, 2, r2dgrd, varid)
@@ -1122,59 +1122,24 @@
      &     'curvilinear coordinates metric in ETA')
       ierr=nf_put_att_text (ncid, varid, 'units',  7,    'meter-1')
       ierr=nf_put_att_text (ncid, varid, 'field', 10, 'pn, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'coordinates', 15,
-     &                      'lat_rho lon_rho')
+      ierr=nf_put_att_text (ncid, varid, 'coordinates', 11,
+     &                      'x_rho y_rho')
       ierr=nf_put_att_text (ncid, varid, 'standard_name', 22,
      &                      'inverse_of_cell_y_size')
-      ierr=nf_def_var (ncid, 'lon_rho', nf_ftype, 2, r2dgrd, varid)
-      ierr=nf_put_att_text (ncid, varid, 'long_name', 23,
-     &                                   'longitude of RHO-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 11,  'degree_east')
-      ierr=nf_put_att_text (ncid, varid, 'field', 15,
-     &                                   'lon_rho, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 9,'longitude')
-      ierr=nf_def_var (ncid, 'lat_rho', nf_ftype, 2, r2dgrd, varid)
-      ierr=nf_put_att_text (ncid,varid,'long_name',22,
-     &                                 'latitude of RHO-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 12,
-     &                                   'degree_north')
-      ierr=nf_put_att_text (ncid, varid, 'field', 15,
-     &                                   'lat_rho, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 8,'latitude')
-      ierr=nf_def_var (ncid, 'lon_u', nf_ftype, 2, u2dgrd, varid)
-      ierr=nf_put_att_text (ncid, varid, 'long_name', 21,
-     &                                   'longitude of U-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 11,  'degree_east')
-      ierr=nf_put_att_text (ncid, varid, 'field', 13,
-     &                                   'lon_u, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 23,
-     &                                   'longitude_at_u_location')
-      ierr=nf_def_var (ncid, 'lat_u', nf_ftype, 2, u2dgrd, varid)
-      ierr=nf_put_att_text (ncid,varid,'long_name',20,
-     &                                 'latitude of U-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 12,
-     &                                   'degree_north')
-      ierr=nf_put_att_text (ncid, varid, 'field', 13,
-     &                                   'lat_u, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 22,
-     &                                   'latitude_at_u_location')
-      ierr=nf_def_var (ncid, 'lon_v', nf_ftype, 2, v2dgrd, varid)
-      ierr=nf_put_att_text (ncid, varid, 'long_name', 21,
-     &                                   'longitude of V-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 11,  'degree_east')
-      ierr=nf_put_att_text (ncid, varid, 'field', 13,
-     &                                   'lon_v, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 23,
-     &                                   'longitude_at_v_location')
-      ierr=nf_def_var (ncid, 'lat_v', nf_ftype, 2, v2dgrd, varid)
-      ierr=nf_put_att_text (ncid,varid,'long_name',20,
-     &                                 'latitude of V-points')
-      ierr=nf_put_att_text (ncid, varid, 'units', 12,
-     &                                   'degree_north')
-      ierr=nf_put_att_text (ncid, varid, 'field', 13,
-     &                                   'lat_v, scalar')
-      ierr=nf_put_att_text (ncid, varid, 'standard_name', 22,
-     &                                   'latitude_at_v_location')
+      ierr=nf_def_var (ncid, 'x_rho', nf_ftype, 2, r2dgrd, varid)
+      ierr=nf_put_att_text (ncid, varid, 'long_name', 25,
+     &                                   'x-locations of RHO-points')
+      ierr=nf_put_att_text (ncid, varid, 'units', 5, 'meter')
+      ierr=nf_put_att_text (ncid, varid, 'field',13, 'x_rho, scalar')
+      ierr=nf_put_att_text (ncid, varid, 'standard_name', 18,
+     &                                   'plane_x_coordinate')
+      ierr=nf_def_var (ncid, 'y_rho', nf_ftype, 2, r2dgrd, varid)
+      ierr=nf_put_att_text (ncid, varid, 'long_name',25,
+     &                                   'y-locations of RHO-points')
+      ierr=nf_put_att_text (ncid, varid, 'units', 5, 'meter')
+      ierr=nf_put_att_text (ncid, varid, 'field',11, 'y_rho, scalar')
+      ierr=nf_put_att_text (ncid, varid, 'standard_name', 18,
+     &                                   'plane_y_coordinate')
       ierr=nf_def_var (ncid, 'angle', nf_ftype, 2, r2dgrd,varid)
       ierr=nf_put_att_text (ncid, varid, 'long_name',30,
      &                                 'angle between XI-axis and EAST')
@@ -1189,7 +1154,7 @@
       ierr=nf_put_att_text (ncid, varid, 'option_1',    5,   'water')
       ierr=nf_put_att_text (ncid, varid, 'standard_name', 16,
      &                                   'land_binary_mask')
-      ierr=nf_put_att_text (ncid, varid, 'coordinates', 15,
-     &                      'lat_rho lon_rho')
+      ierr=nf_put_att_text (ncid, varid, 'coordinates', 11,
+     &                      'x_rho y_rho')
       return
       end

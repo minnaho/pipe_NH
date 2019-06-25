@@ -120,7 +120,8 @@
 #ifdef AGRIF
 #include "zoom.h"
 #endif
-#ifdef NBQ
+!#ifdef NBQ 
+#ifdef NHMG
       integer kp
 #endif
 !

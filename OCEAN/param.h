@@ -30,6 +30,8 @@
 #endif
 #if defined BASIN
       parameter (LLm0=60,   MMm0=50,   N=10)
+#elif defined PIPE
+      parameter (LLm0=256,   MMm0=256,   N=64)
 #elif defined CANYON_A
       parameter (LLm0=65,   MMm0=48,   N=16)
 #elif defined CANYON_B

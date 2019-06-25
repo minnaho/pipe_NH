@@ -9,7 +9,7 @@
 ! CROCO website : http://www.croco-ocean.org
 !======================================================================
 !
-/* This is include file "ocean3.h". 
+/* This is include file "ocean3d.h". 
   --------------------------------------------
 */
 #ifdef SOLVE3D

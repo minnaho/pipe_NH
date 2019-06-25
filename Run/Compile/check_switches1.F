@@ -12,7 +12,7 @@
 !!!!!! as an independent program, or use commands              !!!!!!
 !!!!!! "make checkdefs" or "make depend".                      !!!!!!
 !!!!!! Number of Configuration Choices:                      1 !!!!!!
-!!!!!! Total number of CPP-switches:                       274 !!!!!!
+!!!!!! Total number of CPP-switches:                       277 !!!!!!
 
       implicit none
       integer ierr, is,ie, iexample
@@ -28,28 +28,12 @@
       enddo
       iexample=0
       is=1
-#ifdef REGIONAL
+#ifdef PIPE
       iexample=iexample+1
-      MPI_master_only write(stdout,'(10x,A)') 'REGIONAL'
-      ie=is + 7
+      MPI_master_only write(stdout,'(10x,A)') 'PIPE'
+      ie=is + 3
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='REGIONAL'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef NBIMIN
-      MPI_master_only write(stdout,'(10x,A)') 'NBIMIN'
-      ie=is + 5
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='NBIMIN'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef ICE_NOFLUX
-      MPI_master_only write(stdout,'(10x,A)') 'ICE_NOFLUX'
-      ie=is + 9
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='ICE_NOFLUX'
+      Coptions(is:ie)='PIPE'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -253,6 +237,14 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef ANA_GRID
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_GRID'
+      ie=is + 7
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='ANA_GRID'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef SOLVE3D
       MPI_master_only write(stdout,'(10x,A)') 'SOLVE3D'
       ie=is + 6
@@ -341,19 +333,11 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef TS_HADV_UP3
-      MPI_master_only write(stdout,'(10x,A)') 'TS_HADV_UP3'
+#ifdef ANA_INITIAL
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_INITIAL'
       ie=is +10
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='TS_HADV_UP3'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef TS_HADV_RSUP3
-      MPI_master_only write(stdout,'(10x,A)') 'TS_HADV_RSUP3'
-      ie=is +12
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='TS_HADV_RSUP3'
+      Coptions(is:ie)='ANA_INITIAL'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -421,14 +405,6 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef SPONGE
-      MPI_master_only write(stdout,'(10x,A)') 'SPONGE'
-      ie=is + 5
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='SPONGE'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
 #ifdef VADV_ADAPT_IMP
       MPI_master_only write(stdout,'(10x,A)') 'VADV_ADAPT_IMP'
       ie=is +13
@@ -453,19 +429,19 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef LMD_MIXING
-      MPI_master_only write(stdout,'(10x,A)') 'LMD_MIXING'
-      ie=is + 9
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='LMD_MIXING'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
 #ifdef GLS_MIXING
       MPI_master_only write(stdout,'(10x,A)') 'GLS_MIXING'
       ie=is + 9
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='GLS_MIXING'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef LMD_MIXING
+      MPI_master_only write(stdout,'(10x,A)') 'LMD_MIXING'
+      ie=is + 9
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='LMD_MIXING'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -589,6 +565,14 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef ANA_SMFLUX
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_SMFLUX'
+      ie=is + 9
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='ANA_SMFLUX'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef BULK_FLUX
       MPI_master_only write(stdout,'(10x,A)') 'BULK_FLUX'
       ie=is + 8
@@ -669,19 +653,27 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef QCORRECTION
-      MPI_master_only write(stdout,'(10x,A)') 'QCORRECTION'
-      ie=is +10
+#ifdef ANA_STFLUX
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_STFLUX'
+      ie=is + 9
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='QCORRECTION'
+      Coptions(is:ie)='ANA_STFLUX'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef SFLX_CORR
-      MPI_master_only write(stdout,'(10x,A)') 'SFLX_CORR'
-      ie=is + 8
+#ifdef ANA_SSFLUX
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_SSFLUX'
+      ie=is + 9
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='SFLX_CORR'
+      Coptions(is:ie)='ANA_SSFLUX'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef ANA_SRFLUX
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_SRFLUX'
+      ie=is + 9
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='ANA_SRFLUX'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -765,6 +757,14 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef ANA_BRY
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_BRY'
+      ie=is + 6
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='ANA_BRY'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef FRC_BRY
       MPI_master_only write(stdout,'(10x,A)') 'FRC_BRY'
       ie=is + 6
@@ -805,11 +805,11 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef T_FRC_BRY
-      MPI_master_only write(stdout,'(10x,A)') 'T_FRC_BRY'
-      ie=is + 8
+#ifdef ANA_BMFLUX
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_BMFLUX'
+      ie=is + 9
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='T_FRC_BRY'
+      Coptions(is:ie)='ANA_BMFLUX'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -834,6 +834,14 @@
       ie=is + 6
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='PSOURCE'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef ANA_PSOURCE
+      MPI_master_only write(stdout,'(10x,A)') 'ANA_PSOURCE'
+      ie=is +10
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='ANA_PSOURCE'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -909,22 +917,6 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef OBC_M2ORLANSKI
-      MPI_master_only write(stdout,'(10x,A)') 'OBC_M2ORLANSKI'
-      ie=is +13
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='OBC_M2ORLANSKI'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef OBC_M3ORLANSKI
-      MPI_master_only write(stdout,'(10x,A)') 'OBC_M3ORLANSKI'
-      ie=is +13
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='OBC_M3ORLANSKI'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
 #ifdef OBC_TORLANSKI
       MPI_master_only write(stdout,'(10x,A)') 'OBC_TORLANSKI'
       ie=is +12
@@ -941,27 +933,11 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef OBC_TSPECIFIED
-      MPI_master_only write(stdout,'(10x,A)') 'OBC_TSPECIFIED'
-      ie=is +13
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='OBC_TSPECIFIED'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
 #ifdef AVERAGES
       MPI_master_only write(stdout,'(10x,A)') 'AVERAGES'
       ie=is + 7
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='AVERAGES'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef AVERAGES_K
-      MPI_master_only write(stdout,'(10x,A)') 'AVERAGES_K'
-      ie=is + 9
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='AVERAGES_K'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -1629,11 +1605,27 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef TS_HADV_UP3
+      MPI_master_only write(stdout,'(10x,A)') 'TS_HADV_UP3'
+      ie=is +10
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='TS_HADV_UP3'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef TS_HADV_C6
       MPI_master_only write(stdout,'(10x,A)') 'TS_HADV_C6'
       ie=is + 9
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='TS_HADV_C6'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef TS_HADV_RSUP3
+      MPI_master_only write(stdout,'(10x,A)') 'TS_HADV_RSUP3'
+      ie=is +12
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='TS_HADV_RSUP3'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -1757,6 +1749,14 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef SPONGE
+      MPI_master_only write(stdout,'(10x,A)') 'SPONGE'
+      ie=is + 5
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='SPONGE'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef SPONGE_GRID
       MPI_master_only write(stdout,'(10x,A)') 'SPONGE_GRID'
       ie=is +10
@@ -1778,14 +1778,6 @@
       ie=is +10
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='SPONGE_VIS2'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef ANA_PSOURCE
-      MPI_master_only write(stdout,'(10x,A)') 'ANA_PSOURCE'
-      ie=is +10
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='ANA_PSOURCE'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -2037,11 +2029,35 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef OBC_M2ORLANSKI
+      MPI_master_only write(stdout,'(10x,A)') 'OBC_M2ORLANSKI'
+      ie=is +13
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='OBC_M2ORLANSKI'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef OBC_VOLCONS
       MPI_master_only write(stdout,'(10x,A)') 'OBC_VOLCONS'
       ie=is +10
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='OBC_VOLCONS'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef OBC_M3ORLANSKI
+      MPI_master_only write(stdout,'(10x,A)') 'OBC_M3ORLANSKI'
+      ie=is +13
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='OBC_M3ORLANSKI'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef OBC_TSPECIFIED
+      MPI_master_only write(stdout,'(10x,A)') 'OBC_TSPECIFIED'
+      ie=is +13
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='OBC_TSPECIFIED'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
@@ -2197,27 +2213,35 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef ANA_STFLUX
-      MPI_master_only write(stdout,'(10x,A)') 'ANA_STFLUX'
+#ifdef AVERAGES_K
+      MPI_master_only write(stdout,'(10x,A)') 'AVERAGES_K'
       ie=is + 9
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='ANA_STFLUX'
+      Coptions(is:ie)='AVERAGES_K'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef ANA_SSFLUX
-      MPI_master_only write(stdout,'(10x,A)') 'ANA_SSFLUX'
-      ie=is + 9
+#ifdef QCORRECTION
+      MPI_master_only write(stdout,'(10x,A)') 'QCORRECTION'
+      ie=is +10
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='ANA_SSFLUX'
+      Coptions(is:ie)='QCORRECTION'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
-#ifdef ANA_SRFLUX
-      MPI_master_only write(stdout,'(10x,A)') 'ANA_SRFLUX'
-      ie=is + 9
+#ifdef SFLX_CORR
+      MPI_master_only write(stdout,'(10x,A)') 'SFLX_CORR'
+      ie=is + 8
       if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='ANA_SRFLUX'
+      Coptions(is:ie)='SFLX_CORR'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
+#ifdef T_FRC_BRY
+      MPI_master_only write(stdout,'(10x,A)') 'T_FRC_BRY'
+      ie=is + 8
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='T_FRC_BRY'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif

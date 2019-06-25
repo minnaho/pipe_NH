@@ -30,6 +30,8 @@
 #endif
 #if defined BASIN
       parameter (LLm0=60,   MMm0=50,   N=10)
+#elif defined PIPE
+      parameter (LLm0=512,  MMm0=512,  N=64)
 #elif defined CANYON_A
       parameter (LLm0=65,   MMm0=48,   N=16)
 #elif defined CANYON_B
@@ -203,8 +205,8 @@
 # ifdef NBIMIN
       parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
 # else     
-!      parameter (NP_XI=1,  NP_ETA=1,  NNODES=NP_XI*NP_ETA)
-      parameter (NP_XI=4,  NP_ETA=2,  NNODES=NP_XI*NP_ETA)
+!     parameter (NP_XI=1,  NP_ETA=1,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
 # endif
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
@@ -264,7 +266,7 @@
 #endif
 #if defined PSOURCE || defined PSOURCE_NCFILE
       integer Msrc               ! Number of point sources
-      parameter (Msrc=10)        ! ====== == ===== =======
+      parameter (Msrc=6000)       ! ====== == ===== =======
 #endif
 #ifdef FLOATS
        integer Mfloats           ! Maximum number of floats

@@ -13,13 +13,11 @@
    This is "cppdefs.h": MODEL CONFIGURATION FILE
    ==== == ============ ===== ============= ====
 */
-#define REGIONAL        /* REGIONAL Applications */
 
 
-#if defined REGIONAL
 /*
 !====================================================================
-!               REGIONAL (realistic) Configurations
+!               PIPE Configurations
 !==================================================================== 
 !
 !----------------------
@@ -28,9 +26,10 @@
 !
 */
                       /* Configuration Name */
-# define NBIMIN
 
-# define ICE_NOFLUX
+#define PIPE               /* PIPE Applications */
+
+#if defined PIPE
 
                       /* Parallelization */
 # undef  OPENMP
@@ -41,7 +40,7 @@
                       /* OA Coupling via OASIS (MPI) */
 # undef  OA_COUPLING
                       /* Open Boundary Conditions */
-# define  XIOS
+# undef  XIOS
                       /* I/O server */
 # undef  TIDES
 # define OBC_EAST
@@ -52,7 +51,7 @@
 # undef  BIOLOGY
 # undef  FLOATS
 # undef  STATIONS
-# undef  PASSIVE_TRACER
+# define PASSIVE_TRACER
 # undef  SEDIMENT
 # undef  BBL
 /*!
@@ -70,16 +69,17 @@
 # undef  ETALON_CHECK
                       /* Grid configuration */
 # define CURVGRID
-# define SPHERICAL
+# undef SPHERICAL
 # define MASKING
 # undef  WET_DRY
-# define  NEW_S_COORD
+# define NEW_S_COORD
+# define ANA_GRID
                       /* Model dynamics */
 # define SOLVE3D
 # define UV_COR
 # define UV_ADV
                       /* NHMG */
-# undef NHMG 
+# define NHMG 
 # ifdef NHMG
 #  undef NHMG_DOUBLE_PROJ
 #  define NHMG_WBRY_ZERO
@@ -91,29 +91,30 @@
 # define SALINITY
 # define NONLIN_EOS
 # define SPLIT_EOS
+# define ANA_INITIAL
                       /* Lateral Tracer Advection (default UP3) */
-# undef  TS_HADV_UP3
-# define TS_HADV_RSUP3
+c# define TS_HADV_UP3
+c# define TS_HADV_RSUP3
 # undef  TS_HADV_UP5
 # undef  TS_HADV_C4
 # undef  TS_HADV_WENO5
                       /* Lateral Explicit Momentum Mixing */
-# undef  UV_VIS2
+# define  UV_VIS2
 # ifdef UV_VIS2
 #  define UV_VIS_SMAGO
 # endif
                       /* Lateral Explicit Tracer Mixing */
-# undef  TS_DIF2
+# define TS_DIF2
 # undef  TS_DIF4
 # undef  TS_MIX_S
                       /* Sponge layers for UV and TS */
-# define SPONGE
+c# define SPONGE
                       /* Semi-implicit Vertical Tracer/Mom Advection */
 # define  VADV_ADAPT_IMP
                       /* Vertical Mixing */
 # undef  BODYFORCE
 # undef  BVF_MIXING
-# define LMD_MIXING
+c# define LMD_MIXING
 # undef  GLS_MIXING
 # ifdef LMD_MIXING
 #  define LMD_SKPP
@@ -135,6 +136,7 @@
 #  undef  ZOS_HSIG
 # endif
                       /* Surface Forcing */
+# define ANA_SMFLUX
 # undef  BULK_FLUX
 # ifdef BULK_FLUX
 #  define BULK_FAIRALL
@@ -147,17 +149,17 @@
 #  undef  ERA_ECMWF
 #  undef  RELATIVE_WIND
 # else
-#  define QCORRECTION
-#  define SFLX_CORR
+c#  define QCORRECTION
+c#  define SFLX_CORR
 #  undef ANA_DIURNAL_SW
 # endif
-!!!!# define ANA_STFLUX
-!!!!# define ANA_SSFLUX
-!!!!# define ANA_SRFLUX
-!!!!# define ANA_BSFLUX
-!!!!# define ANA_BTFLUX
+# define ANA_STFLUX
+# define ANA_SSFLUX
+# define ANA_SRFLUX
 
                       /* Lateral Forcing */
+c# define ZCLIMATOLOGY
+c# define ANA_SSH
 # undef CLIMATOLOGY
 # ifdef CLIMATOLOGY
 #  define ZCLIMATOLOGY
@@ -171,7 +173,8 @@
 #  undef  ROBUST_DIAG
 # endif
 
-# define  FRC_BRY
+# define ANA_BRY
+# define FRC_BRY
 # ifdef FRC_BRY
 #  define Z_FRC_BRY
 #  define M2_FRC_BRY
@@ -179,13 +182,15 @@
 #  ifdef NHMG
 #   define W_FRC_BRY
 #  endif
-#  define T_FRC_BRY
+!#  define T_FRC_BRY
 # endif
                       /* Bottom Forcing */
+# define ANA_BMFLUX
 # define ANA_BSFLUX
 # define ANA_BTFLUX
-                      /* Point Sources - Rivers */
-# undef PSOURCE
+                      /* Point Sources - Rivers, Pipe */
+# define PSOURCE
+# define ANA_PSOURCE
 # undef PSOURCE_NCFILE
 # ifdef PSOURCE_NCFILE                    
 #   define PSOURCE_NCFILE_TS
@@ -199,18 +204,18 @@
 #  define OBC_M2FLATHER
 # else
 #  undef  OBC_M2SPECIFIED
-#  undef  OBC_M2FLATHER
+#  define OBC_M2FLATHER
 #  undef  OBC_M2CHARACT
-#  undef  OBC_M2ORLANSKI
+!#  define OBC_M2ORLANSKI
 # endif
-# undef OBC_M3ORLANSKI
-# undef OBC_TORLANSKI
-# define  OBC_M2SPECIFIED
+c# define OBC_M3ORLANSKI
+# define OBC_TORLANSKI
+!# define  OBC_M2SPECIFIED
 # define  OBC_M3SPECIFIED
-# define  OBC_TSPECIFIED
+c# define  OBC_TSPECIFIED
                       /* Input/Output & Diagnostics */
 # define AVERAGES
-# define AVERAGES_K
+c# define AVERAGES_K
 # undef  DIAGNOSTICS_TS
 # undef  DIAGNOSTICS_UV
 # ifdef DIAGNOSTICS_TS

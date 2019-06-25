@@ -36,10 +36,10 @@
 # LDFLAGS       Flags to the loader
 #
       CPP = cpp -traditional -DLinux -DIfort
- CPPFLAGS = -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/minnaho/xios-1.0/inc
+ CPPFLAGS = -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include
       CFT = mpif90
       LDR = $(CFT)
-   FFLAGS = -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/minnaho/xios-1.0/inc
- FFLAGS90 = -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/minnaho/xios-1.0/inc
+   FFLAGS = -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/minnaho/pipe_NH/Run/NHMG/include
+ FFLAGS90 = -O3 -72 -fno-alias -i4 -r8 -fp-model precise -xHost -I/opt/netcdf-4.4.1/include -I/opt/mpich-3.2/include -I/home/minnaho/pipe_NH/Run/NHMG/include
   LDFLAGS =
-     LCDF = -L/opt/netcdf-4.4.1/lib -lnetcdff -L/opt/mpich-3.2/lib -lmpich /home/minnaho/xios-1.0/lib/libxios.a -lstdc++ -lnetcdff
+     LCDF =  -L/opt/netcdf-4.4.1/lib -lnetcdff -L/opt/mpich-3.2/lib -lmpich -L/home/minnaho/pipe_NH/Run/NHMG/lib -lnhmg

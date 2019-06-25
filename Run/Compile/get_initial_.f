@@ -1,18 +1,20 @@
       subroutine get_initial
       implicit none
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -33,14 +35,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -50,10 +54,12 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -63,7 +69,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -78,13 +83,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -94,9 +101,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -139,6 +143,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -150,10 +156,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -166,8 +168,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -252,32 +252,50 @@
      &                                ,  avgname
      &                                ,   bry_file
      &                      ,  vname
-      real zeta(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
-      real ubar(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
-      real vbar(-1:Lm+2+padd_X,-1:Mm+2+padd_E,4)
+      real zeta(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
+      real ubar(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
+      real vbar(-2:Lm+3+padd_X,-2:Mm+3+padd_E,4)
       common /ocean_zeta/zeta
       common /ocean_ubar/ubar
       common /ocean_vbar/vbar
-      real u(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real v(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3)
-      real t(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N,3,NT)
+      real nh_ubar(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real nh_vbar(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      real nh_wcor(-2:Lm+3+padd_X,-2:Mm+3+padd_E)
+      common /nh_wcor/nh_ubar,nh_vbar,nh_wcor
+      real u(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real v(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3)
+      real t(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N,3,NT)
       common /ocean_u/u /ocean_v/v /ocean_t/t
-      real Hz(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hz_bak(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_r(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real z_w(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Huon(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real Hvom(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real Hz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hz_bak(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_r(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real z_w(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Huon(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real Hvom(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /grid_Hz_bak/Hz_bak /grid_zw/z_w /grid_Huon/Huon
       common /grid_Hvom/Hvom
-      real We(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
-      real Wi(-1:Lm+2+padd_X,-1:Mm+2+padd_E,0:N)
+      real We(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
+      real Wi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N)
       common /grid_Hz/Hz /grid_zr/z_r /grid_We/We
       common /grid_Wi/Wi
-      real rho1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
-      real rho(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real wz(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,3)
+      real nhdu(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdv(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N,2)
+      real nhdw(-2:Lm+3+padd_X,-2:Mm+3+padd_E,0:N,2)
+      real dzdxi(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real dzdeta(-2:Lm+3+padd_X,-2:Mm+3+padd_E,1:N)
+      real Hz_half(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      common /ocean_wz/wz
+      common /ocean_nhdu/nhdu
+      common /ocean_nhdv/nhdv
+      common /ocean_nhdw/nhdw
+      common /ocean_dzdxi/dzdxi
+      common /ocean_dzdeta/dzdeta
+      common /grid_Hz_half/Hz_half
+      real rho1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
+      real rho(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_rho1/rho1 /ocean_rho/rho
-      real qp1(-1:Lm+2+padd_X,-1:Mm+2+padd_E,N)
+      real qp1(-2:Lm+3+padd_X,-2:Mm+3+padd_E,N)
       common /ocean_qp1/qp1
       real qp2
       parameter (qp2=0.0000172D0)
@@ -1192,7 +1210,7 @@
       lvar=lenstr(vname(1,indxZ))
       ierr=nf_inq_varid (ncid, vname(1,indxZ)(1:lvar), varid)
       if (ierr .eq. nf_noerr) then
-        ierr=nf_fread (zeta(-1,-1,1), ncid, varid,
+        ierr=nf_fread (zeta(-2,-2,1), ncid, varid,
      &                                         indx, r2dvar)
         if (ierr .ne. nf_noerr) then
           write(stdout,2) vname(1,indxZ)(1:lvar),indx,ininame(1:lstr)
@@ -1205,7 +1223,7 @@
       lvar=lenstr(vname(1,indxUb))
       ierr=nf_inq_varid (ncid, vname(1,indxUb)(1:lvar), varid)
       if (ierr .eq. nf_noerr) then
-        ierr=nf_fread (ubar(-1,-1,1), ncid, varid,
+        ierr=nf_fread (ubar(-2,-2,1), ncid, varid,
      &                                         indx, u2dvar)
         if (ierr .ne. nf_noerr) then
           write(stdout,2) vname(1,indxUb)(1:lvar), indx,
@@ -1219,7 +1237,7 @@
       lvar=lenstr(vname(1,indxVb))
       ierr=nf_inq_varid (ncid, vname(1,indxVb)(1:lvar), varid)
       if (ierr .eq. nf_noerr) then
-        ierr=nf_fread (vbar(-1,-1,1), ncid, varid,
+        ierr=nf_fread (vbar(-2,-2,1), ncid, varid,
      &                                         indx, v2dvar)
         if (ierr .ne. nf_noerr) then
           write(stdout,2) vname(1,indxVb)(1:lvar), indx,
@@ -1233,7 +1251,7 @@
       lvar=lenstr(vname(1,indxU))
       ierr=nf_inq_varid (ncid, vname(1,indxU)(1:lvar), varid)
       if (ierr .eq. nf_noerr) then
-        ierr=nf_fread (u(-1,-1,1,1), ncid, varid,
+        ierr=nf_fread (u(-2,-2,1,1), ncid, varid,
      &                                        indx, u3dvar)
         if (ierr .ne. nf_noerr) then
           write(stdout,2) vname(1,indxU)(1:lvar), indx,
@@ -1247,7 +1265,7 @@
       lvar=lenstr(vname(1,indxV))
       ierr=nf_inq_varid (ncid, vname(1,indxV)(1:lvar), varid)
       if (ierr .eq. nf_noerr) then
-        ierr=nf_fread (v(-1,-1,1,1), ncid, varid,
+        ierr=nf_fread (v(-2,-2,1,1), ncid, varid,
      &                                        indx, v3dvar)
         if (ierr .ne. nf_noerr) then
           write(stdout,2) vname(1,indxV)(1:lvar), indx,
@@ -1264,7 +1282,7 @@
         ierr=nf_inq_varid (ncid, vname(1,indxT+itrc-1)(1:lvar),
      &                                                    varid)
         if (ierr .eq. nf_noerr) then
-          ierr=nf_fread (t(-1,-1,1,1,itrc), ncid,  varid,
+          ierr=nf_fread (t(-2,-2,1,1,itrc), ncid,  varid,
      &                                               indx, r3dvar)
           if (ierr .ne. nf_noerr) then
             write(stdout,2) vname(1,indxT+itrc-1)(1:lvar), indx,

@@ -272,7 +272,7 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/x86_64-mageia-linux-gnu/5.4.0 /usr/lib64 /lib64 "
+sys_lib_search_path_spec="/usr/lib/gcc/x86_64-mageia-linux-gnu/5.5.0 /usr/lib64 /lib64 "
 
 # Run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib64/atlas "

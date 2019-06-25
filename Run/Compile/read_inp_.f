@@ -1,17 +1,19 @@
       subroutine read_inp (ierr)
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=1024,  N=128)
+      parameter (LLm0=512,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=4,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
+      integer*4 Msrc
+      parameter (Msrc=6000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -32,14 +34,16 @@
       integer*4   ntrc_salt, ntrc_pas, ntrc_bio, ntrc_sed
       parameter (itemp=1)
       parameter (ntrc_salt=1)
-      parameter (ntrc_pas=0)
+      parameter (ntrc_pas=1)
       parameter (ntrc_bio=0)
       parameter (ntrc_sed=0)
       parameter (NT=itemp+ntrc_salt+ntrc_pas+ntrc_bio+ntrc_sed)
       integer*4   ntrc_diats, ntrc_diauv, ntrc_diabio
       integer*4   ntrc_diavrt, ntrc_diaek, ntrc_surf
      &          , isalt
+     &          , itpas
       parameter (isalt=itemp+1)
+      parameter (itpas=itemp+ntrc_salt+1)
       parameter (ntrc_diabio=0)
       parameter (ntrc_diats=0)
       parameter (ntrc_diauv=0)
@@ -49,10 +53,12 @@
       real dt, dtfast, time, time2, time_start, tdays
       integer*4 ndtfast, iic, kstp, krhs, knew, next_kstp
      &      , iif, nstp, nrhs, nnew, nbstep3d
+     &      , iprec1, iprec2
       logical PREDICTOR_2D_STEP
       common /time_indices/  dt,dtfast, time, time2,time_start, tdays,
      &                       ndtfast, iic, kstp, krhs, knew, next_kstp,
      &                       iif, nstp, nrhs, nnew, nbstep3d,
+     &                       iprec1, iprec2,
      &                       PREDICTOR_2D_STEP
       real time_avg, time2_avg, rho0
      &               , rdrg, rdrg2, Cdb_min, Cdb_max, Zob
@@ -62,7 +68,6 @@
       real  rx0, rx1
       real  tnu2(NT),tnu4(NT)
       real weight(6,0:NWEIGHT)
-      real  x_sponge,   v_sponge
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
@@ -77,13 +82,15 @@
      &           , sc_w,      Cs_w,      sc_r,    Cs_r
      &           , rx0,       rx1,       tnu2,    tnu4
      &                      , weight
-     &                      , x_sponge,   v_sponge
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
      &                                 , ntsavg,  navg
      &                      , got_tini
      &                      , ldefhis
+      real Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akv_bak, Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
@@ -93,9 +100,6 @@
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
-      real lonmin, lonmax, latmin, latmax
-      common /communicators_lonlat/
-     &     lonmin, lonmax, latmin, latmax
       real*8 volume, avgke, avgpe, avgkp, bc_crss
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
@@ -138,6 +142,8 @@
       parameter (indxU=6, indxV=7, indxT=8)
       integer*4 indxS
       parameter (indxS=indxT+1)
+      integer*4 indxTPAS
+      parameter (indxTPAS=indxT+ntrc_salt+1)
       integer*4 indxBSD, indxBSS
       parameter (indxBSD=indxT+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
@@ -149,10 +155,6 @@
      &           indxDiff=indxO+4,indxAkv=indxO+5, indxAkt=indxO+6)
       integer*4 indxAks
       parameter (indxAks=indxAkt+4)
-      integer*4 indxHbl
-      parameter (indxHbl=indxAkt+5)
-      integer*4 indxHbbl
-      parameter (indxHbbl=indxAkt+6)
       integer*4 indxSSH
       parameter (indxSSH=indxAkt+12)
       integer*4 indxSUSTR, indxSVSTR
@@ -165,8 +167,6 @@
       parameter (indxSwflx=indxShflx+1, indxShflx_rsw=indxShflx+2)
       integer*4 indxSST, indxdQdSST
       parameter (indxSST=indxShflx_rsw+1, indxdQdSST=indxShflx_rsw+2)
-      integer*4 indxSSS
-      parameter (indxSSS=indxSST+2)
       integer*4 indxWstr
       parameter (indxWstr=indxSUSTR+21)
       integer*4 indxUWstr
@@ -251,6 +251,34 @@
      &                                ,  avgname
      &                                ,   bry_file
      &                      ,  vname
+      real Qbar(Msrc)
+      common /sources_Qbar/ Qbar
+      real Qsrc(Msrc,N)
+      common /source_Qsrc/ Qsrc
+      real Qshape(Msrc,N)
+      common /source_Qshape/ Qshape
+      real Tsrc(Msrc,N,NT)
+      common /source_Tsrc/ Tsrc
+      real Tsrc0(Msrc,NT)
+      common /source_Tsrc0/ Tsrc0
+      real lasrc(Msrc)
+      common /source_lasrc/ lasrc
+      real losrc(Msrc)
+      common /source_losrc/ losrc
+      integer*4 Nsrc
+      common /source_Nsrc/ Nsrc
+      integer*4 Dsrc(Msrc)
+      common /source_Dsrc/ Dsrc
+      integer*4 Isrc(Msrc)
+      common /source_Isrc/ Isrc
+      integer*4 Jsrc(Msrc)
+      common /source_Jsrc/ Jsrc
+      logical Lsrc(Msrc,30)
+      common /source_Lsrc/ Lsrc
+      integer*4 Isrc_mpi(Msrc,0:NNODES-1)
+      common /source_Isrc_mpi/ Isrc_mpi
+      integer*4 Jsrc_mpi(Msrc,0:NNODES-1)
+      common /source_Jsrc_mpi/ Jsrc_mpi
       include 'mpif.h'
 !$AGRIF_DO_NOT_TREAT
       INTEGER*4 :: ocean_grid_comm
@@ -263,7 +291,7 @@
       integer*4 ierr, iargc, is,ie, kwlen, lstr, lenstr
      &                                       , itrc
       logical dumboolean
-      fname='croco.in'
+      fname='no_startup_file'
       if (mynode.eq.0 .and. iargc().GT.0) call getarg(1,fname)
       call MPI_Bcast(fname,64,MPI_BYTE, 0, MPI_COMM_WORLD,ierr)
       wrthis(indxTime)=.false.
@@ -332,6 +360,7 @@
       elseif (keyword(1:kwlen).eq.'initial') then
         call cancel_kwd (keyword(1:kwlen), ierr)
         read(input,*,err=95) nrrec
+        if (nrrec.gt.0) then
           read(input,'(A)',err=95) fname
           lstr=lenstr(fname)
           call insert_node (fname, lstr, mynode, NNODES, ierr)
@@ -340,36 +369,7 @@
           ininame=fname(1:lstr)
           if (mynode.eq.0) write(stdout,'(1x,A,2x,A,4x,A,I3)')
      &     'Initial State File:', ininame(1:lstr), 'Record:',nrrec
-      elseif (keyword(1:kwlen).eq.'grid') then
-        call cancel_kwd (keyword(1:kwlen), ierr)
-        read(input,'(A)',err=95) fname
-        lstr=lenstr(fname)
-        call insert_node (fname, lstr, mynode, NNODES, ierr)
-        open(testunit,file=fname(1:lstr), status='old', err=97)
-        close(testunit)
-        grdname=fname(1:lstr)
-        if (mynode.eq.0) write(stdout,'(10x,A,2x,A)')
-     &                   'Grid File:', grdname(1:lstr)
-      elseif (keyword(1:kwlen).eq.'forcing') then
-        call cancel_kwd (keyword(1:kwlen), ierr)
-        read(input,'(A)',err=95) fname
-        lstr=lenstr(fname)
-        call insert_node (fname, lstr, mynode, NNODES, ierr)
-        open (testunit, file=fname(1:lstr), status='old', err=97)
-        close(testunit)
-        frcname=fname(1:lstr)
-        if (mynode.eq.0) write(stdout,'(2x,A,2x,A)')
-     &             'Forcing Data File:', frcname(1:lstr)
-        elseif (keyword(1:kwlen).eq.'boundary') then
-          call cancel_kwd (keyword(1:kwlen), ierr)
-          read(input,'(A)',err=95) fname
-          lstr=lenstr(fname)
-          call insert_node (fname, lstr, mynode, NNODES, ierr)
-          open (testunit, file=fname(1:lstr), status='old', err=97)
-          close(testunit)
-          bry_file=fname(1:lstr)
-          if (mynode.eq.0) write(stdout,'(6x,A,2x,A)')
-     &          'Boundary File:', bry_file(1:lstr)
+        endif
       elseif (keyword(1:kwlen).eq.'restart') then
         call cancel_kwd (keyword(1:kwlen), ierr)
         read(input,*,err=95) nrst, nrpfrst
@@ -438,10 +438,10 @@
      &                                          ,  wrthis(indxAkv)
      &                                          ,  wrthis(indxAkt)
      &                                          ,  wrthis(indxAks)
+     &                                          ,  wrthis(indxVisc)
      &                                          ,  dumboolean
-     &                                          ,  wrthis(indxDiff)
-     &                                          ,  wrthis(indxHbl)
-     &                                          ,  wrthis(indxHbbl)
+     &                                          ,  dumboolean
+     &                                          ,  dumboolean
      &                                          ,  wrthis(indxBostr)
      &                                          ,  wrthis(indxWstr)
      &                                          ,  wrthis(indxUWstr)
@@ -459,9 +459,7 @@
      &                                        .or. wrthis(indxAkv)
      &                                        .or. wrthis(indxAkt)
      &                                        .or. wrthis(indxAks)
-     &                                        .or. wrthis(indxDiff)
-     &                                        .or. wrthis(indxHbl)
-     &                                        .or. wrthis(indxHbbl)
+     &                                        .or. wrthis(indxVisc)
      &                                        .or. wrthis(indxBostr)
      &                                        .or. wrthis(indxWstr)
      &                                        .or. wrthis(indxUWstr)
@@ -479,11 +477,7 @@
      &                      'Vertical diffusivity for temperature.'
      &  , wrthis(indxAks),  'write Aks  ',
      &                      'Vertical diffusivity for salinity.'
-     &  , wrthis(indxDiff),  'write Visc3d', 'Horizontal diffusivity.'
-     &  , wrthis(indxHbl),  'write Hbl  ',
-     &                      'Depth of KPP-model boundary layer.'
-     &  , wrthis(indxHbbl), 'write Hbbl  ',
-     &                      'Depth of bottom planetary boundary layer.'
+     &  , wrthis(indxVisc),  'write Visc3d', 'Horizontal viscosity.'
      &  , wrthis(indxBostr), 'write Bostr', 'Bottom Stress.'
      &  , wrthis(indxWstr),  'write Wstress', 'Wind Stress.'
      &  , wrthis(indxUWstr), 'write U-Wstress comp.', 'U-Wind Stress.'
@@ -522,10 +516,10 @@
         read(input,*,err=95) wrtavg(indxR), wrtavg(indxO)
      &        ,  wrtavg(indxW),  wrtavg(indxAkv),  wrtavg(indxAkt)
      &                                          ,  wrtavg(indxAks)
+     &                                          ,  wrtavg(indxVisc)
      &                                          ,  dumboolean
-     &                                          ,  wrtavg(indxDiff)
-     &                                          ,  wrtavg(indxHbl)
-     &                                          ,  wrtavg(indxHbbl)
+     &                                          ,  dumboolean
+     &                                          ,  dumboolean
      &                                          ,  wrtavg(indxBostr)
      &                                          ,  wrtavg(indxWstr)
      &                                          ,  wrtavg(indxUWstr)
@@ -540,9 +534,7 @@
         if ( wrtavg(indxR) .or. wrtavg(indxO) .or. wrtavg(indxW)
      &                   .or. wrtavg(indxAkv) .or. wrtavg(indxAkt)
      &                                        .or. wrtavg(indxAks)
-     &                                        .or. wrtavg(indxDiff)
-     &                                        .or. wrtavg(indxHbl)
-     &                                        .or. wrtavg(indxHbbl)
+     &                                        .or. wrtavg(indxVisc)
      &                                        .or. wrtavg(indxBostr)
      &                                        .or. wrtavg(indxWstr)
      &                                        .or. wrtavg(indxUWstr)
@@ -560,11 +552,7 @@
      &                      'Vertical diffusivity for temperature.'
      &  , wrtavg(indxAks),  'write Aks  ',
      &                         'Vertical diffusivity for salinity.'
-     &  , wrtavg(indxDiff),'write diff3d', 'Horizontal diffusivity'
-     &  , wrtavg(indxHbl),  'write Hbl  ',
-     &                          'Depth of KPP-model boundary layer'
-     &  , wrtavg(indxHbbl),  'write Hbbl  ',
-     &                    'Depth of the bottom planetary boundary layer'
+     &  , wrtavg(indxVisc),'write visc3d', 'Horizontal viscosity'
      &  , wrtavg(indxBostr),'write Bostr', 'Bottom Stress.'
      &  , wrtavg(indxWstr), 'write Wstr', 'Wind Stress.'
      &  , wrtavg(indxUWstr),'write U-Wstress comp.', 'U-Wind Stress.'
@@ -581,6 +569,9 @@
         if (mynode.eq.0) write(stdout,'(F10.4,2x,A,1x,A)')
      &        rho0, 'rho0     Boussinesq approximation',
      &                           'mean density, kg/m3.'
+      elseif (keyword(1:kwlen).eq.'lateral_visc') then
+        call cancel_kwd (keyword(1:kwlen), ierr)
+        read(input,*,err=95) visc2, visc4
         if (mynode.eq.0) write(stdout,9) visc2
    9    format(1pe10.3,2x,'visc2    Horizontal Laplacian ',
      &       'mixing coefficient [m2/s]',/,32x,'for momentum.')
@@ -607,22 +598,19 @@
    7      format(1pe10.3,'  tnu2(',i2,')  Horizontal Laplacian '
      &     ,'mixing coefficient (m2/s)',/,32x,'for tracer ',i2,'.')
         enddo
-      elseif (keyword(1:kwlen).eq.'tracer_diff4') then
+      elseif (keyword(1:kwlen).eq.'vertical_mixing') then
         call cancel_kwd (keyword(1:kwlen), ierr)
-        read(input,*,err=95) (tnu4(itrc),itrc=1,NT)
+        read(input,*,err=95) Akv_bak,(Akt_bak(itrc),itrc=1,NT)
+        if (mynode.eq.0) write(stdout,'(1pe10.3,2x,A,1x,A)')
+     &      Akv_bak, 'Akv_bak    Background vertical viscosity',
+     &                                     'coefficient, m2/s.'
         do itrc=1,NT
-          if (mynode.eq.0) write(stdout,8) tnu4(itrc), itrc, itrc
-   8      format(1pe10.3,'  tnu4(',i2,')  Horizontal biharmonic'
-     &    ,' mixing coefficient [m4/s]',/,32x,'for tracer ',i2,'.')
+          if (mynode.eq.0) write(stdout,
+     &           '(1pe10.3,2x,A,I2,A,1x,A/32x,A,I2,A)')
+     &            Akt_bak(itrc), 'Akt_bak(', itrc, ')',
+     &           'Background vertical mixing coefficient, m2/s,',
+     &                                  'for tracer ', itrc, '.'
         enddo
-      elseif (keyword(1:kwlen).eq.'sponge') then
-        call cancel_kwd (keyword(1:kwlen), ierr)
-        read(input,*,err=95) x_sponge, v_sponge
-        if (mynode.eq.0) write(stdout,'(1pe10.2,2x,A,1x,A)')
-     &     x_sponge,'x_sponge Thickness of sponge',
-     &     'and/or nudging layer (m)'
-        if (mynode.eq.0) write(stdout,'(f10.2,2x,A)')
-     &     v_sponge,'v_sponge Viscosity in sponge layer (m2/s)'
       elseif (keyword(1:kwlen).eq.'nudg_cof') then
         call cancel_kwd (keyword(1:kwlen), ierr)
           read(input,*,err=95) tauT_in,tauT_out,tauM_in,tauM_out
@@ -638,6 +626,44 @@
      &        tauM_in,'tauM_in  Nudging coefficients [sec^-1]'
           if (mynode.eq.0) write(stdout,'(1pe10.3,2x,A/)')
      &       tauM_out,'tauM_out Nudging coefficients [sec^-1]'
+      elseif (keyword(1:kwlen).eq.'psource') then
+        call cancel_kwd (keyword(1:kwlen), ierr)
+        read(input,*,err=95) Nsrc
+        if (mynode.eq.0) write(stdout,'(/6x,i6,2x,A,1x,A)')
+     &                               Nsrc, 'Number of point sources'
+        do is=1,Nsrc
+          read(input,*,err=95) Isrc(is), Jsrc(is), Dsrc(is), Qbar(is),
+     &                                     (Lsrc(is,itrc), itrc=1,NT),
+     &                                    (Tsrc0(is,itrc), itrc=1,NT)
+          if (mynode.eq.0) write(stdout,'(3(/6x,i6,2x,A))')
+     &    Isrc(is), 'I point source indice'
+     &  , Jsrc(is), 'J point source indice'
+     &  , Dsrc(is), 'Direction of point source flow'
+          if (mynode.eq.0) write(stdout,'(1pe10.3,2x,A)')
+     &    Qbar(is), 'Total transport at point source'
+          write(*,*)'Isrc(is)=',Isrc(is)
+          write(*,*)'Jsrc(is)=',Jsrc(is)
+          if (iminmpi.LE.Isrc(is) .AND. Isrc(is).LE.imaxmpi .AND.
+     &        jminmpi.LE.Jsrc(is) .AND. Jsrc(is).LE.jmaxmpi) then
+           Isrc_mpi(is,mynode)=Isrc(is)-iminmpi+1
+           Jsrc_mpi(is,mynode)=Jsrc(is)-jminmpi+1
+          else
+           Isrc_mpi(is,mynode)=-1
+           Jsrc_mpi(is,mynode)=-1
+          endif
+          do itrc=1,NT
+            if (mynode.eq.0) write(stdout,
+     &                     '(6x,L1,2x,A,I2,A,2x,A,I2,A)')
+     &                      Lsrc(is,itrc), 'write Lsrc(',
+     &                      itrc,')', 'Tracer of index', itrc,'.'
+          enddo
+          do itrc=1,NT
+            if (mynode.eq.0) write(stdout,
+     &                     '(6x,1pe10.3,2x,A,I2,A,2x,A,I2,A)')
+     &                      Tsrc0(is,itrc), 'write Tsrc(',
+     &                      itrc,')', 'Tracer of index', itrc,'.'
+          enddo
+        enddo
       else
         if (mynode.eq.0) write(stdout,'(/3(1x,A)/)')
      &                  'WARNING: Unrecognized keyword:',

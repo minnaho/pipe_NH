@@ -22,7 +22,8 @@ ROOT_DIR=$SOURCE/..
 # -- NHMG --
 #
 # compiler options
-NHMGPATH=$HOME/CROCO-NH
+#NHMGPATH=$HOME/CROCO-NH
+NHMGPATH=../NHMG
 #
 LINUX_FC=ifort
 
@@ -102,7 +103,7 @@ ${COPY} ${ROOT_DIR}/PISCES/kRGB61* $RUNDIR
 if [[ -e "namelist_pisces" ]] ; then
 	echo "  file namelist_pisces exists in Run directory"
 else
-	${COPY} ${SOURCE}/PISCES/namelist_pisces* $RUNDIR
+	${COPY} ${ROOT_DIR}/PISCES/namelist_pisces* $RUNDIR
 	echo "  file namelist_pisces copied from source directory"
 fi
 

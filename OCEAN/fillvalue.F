@@ -51,7 +51,7 @@
       elseif (typefile ==filetype_diaM_avg) then
          text='WRT_DIAM_AVG'
       endif
- !
+
 # ifdef FILLVAL
 ! Fill with spval where rmask==0 .
       mask = (work2d_tmp.eq.mask2)
