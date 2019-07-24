@@ -405,6 +405,14 @@
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif
+#ifdef SPONGE
+      MPI_master_only write(stdout,'(10x,A)') 'SPONGE'
+      ie=is + 5
+      if (ie.ge.max_opt_size) goto 99
+      Coptions(is:ie)='SPONGE'
+      Coptions(ie+1:ie+1)=' '
+      is=ie+2
+#endif
 #ifdef VADV_ADAPT_IMP
       MPI_master_only write(stdout,'(10x,A)') 'VADV_ADAPT_IMP'
       ie=is +13
@@ -1746,14 +1754,6 @@
       ie=is +10
       if (ie.ge.max_opt_size) goto 99
       Coptions(is:ie)='TS_VADV_FCT'
-      Coptions(ie+1:ie+1)=' '
-      is=ie+2
-#endif
-#ifdef SPONGE
-      MPI_master_only write(stdout,'(10x,A)') 'SPONGE'
-      ie=is + 5
-      if (ie.ge.max_opt_size) goto 99
-      Coptions(is:ie)='SPONGE'
       Coptions(ie+1:ie+1)=' '
       is=ie+2
 #endif

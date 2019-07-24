@@ -424,7 +424,8 @@ c        call v3dbc_interp_tile(Istr,Iend,Jstr,Jend)
 !====================================================================
       if (EASTERN_EDGE) then
 #  ifdef OBC_COM_EAST
-#   ifdef OBC_COM_M3ORLANSKI
+!#   ifdef OBC_COM_M3ORLANSKI
+#   ifdef OBC_COM_M3ORLANSKI_EAST
         do k=1,N                             ! Eastern edge radiation
           do j=JstrV-1,Jend                  ! ======= ==== =========
             grad(Iend  ,j)=v(Iend  ,j+1,k,nstp)-v(Iend  ,j,k,nstp)
@@ -482,7 +483,8 @@ c        call v3dbc_interp_tile(Istr,Iend,Jstr,Jend)
           enddo
         enddo
 !
-#   elif defined OBC_COM_M3SPECIFIED
+!#   elif defined OBC_COM_M3SPECIFIED
+#   elif defined OBC_COM_M3SPECIFIED_EAST
 !                                            Eastern edge Specified BC
 !                                            ======= ==== ========= ==
         do k=1,N

@@ -108,7 +108,7 @@ c# define TS_HADV_RSUP3
 # undef  TS_DIF4
 # undef  TS_MIX_S
                       /* Sponge layers for UV and TS */
-c# define SPONGE
+# define SPONGE
                       /* Semi-implicit Vertical Tracer/Mom Advection */
 # define  VADV_ADAPT_IMP
                       /* Vertical Mixing */

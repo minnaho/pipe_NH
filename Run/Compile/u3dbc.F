@@ -220,7 +220,9 @@
 !====================================================================
       if (EASTERN_EDGE) then
 #  ifdef OBC_COM_EAST
-#   ifdef OBC_COM_M3ORLANSKI
+!#   ifdef OBC_COM_M3ORLANSKI                ! hack for gradient eastern
+                                             ! boundary only 
+#   ifdef OBC_COM_M3ORLANSKI_EAST
         do k=1,N                             ! Eastern edge radiation
           do j=Jstr,Jend+1                   ! ======= ==== =========
             grad(Iend  ,j)=(u(Iend  ,j,k,nstp)-u(Iend  ,j-1,k,nstp))
@@ -284,7 +286,9 @@
           enddo
         enddo
 !
-#   elif defined OBC_COM_M3SPECIFIED
+!#   elif defined OBC_COM_M3SPECIFIED        ! hack for graident eastern
+                                             ! boundary only
+#   elif defined OBC_COM_M3SPECIFIED_EAST
 !                                            Eastern edge Specified BC
 !                                            ======= ==== ========= ==
         do k=1,N

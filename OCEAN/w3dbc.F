@@ -197,7 +197,8 @@
 !====================================================================
       if (EASTERN_EDGE) then
 #  ifdef OBC_COM_EAST
-#   ifdef OBC_COM_M3ORLANSKI
+!#   ifdef OBC_COM_M3ORLANSKI
+#   ifdef OBC_COM_M3ORLANSKI_EAST
 !                                           Eastern edge radiation BC
 !                                           ======= ==== ========= ==
         do k=1,N
@@ -264,7 +265,8 @@
 #    endif
           enddo
         enddo
-#   elif defined OBC_COM_M3SPECIFIED
+!#   elif defined OBC_COM_M3SPECIFIED
+#   elif defined OBC_COM_M3SPECIFIED_EAST
 !                                            Eastern edge Specified BC
 !                                            ======= ==== ========= ==
         do k=1,N

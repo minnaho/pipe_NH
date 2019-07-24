@@ -91,7 +91,7 @@ C$    integer omp_get_thread_num
 #endif
 #ifdef PIPE
       real u0,v0
-      parameter (u0=0.02)
+      parameter (u0=0.3101367)
       parameter (v0=0.)
 #endif
 !
@@ -169,7 +169,7 @@ C$    integer omp_get_thread_num
             zeta(i,j,1)=(-f(i,j)*u0/g)*(yr(i,j)-el/2.)
             ubar(i,j,1)=u0
             ubar(i,j,2)=ubar(i,j,1)
-            vbar(i,j,1)=0.
+            vbar(i,j,1)=v0
             vbar(i,j,2)=vbar(i,j,1)
           enddo
         enddo
@@ -315,8 +315,8 @@ C$    integer omp_get_thread_num
         do k=1,N
           do j=JR_RANGE
             do i=IR_RANGE
-              u(i,j,k,1)=0.02
-              v(i,j,k,1)=0.
+              u(i,j,k,1)=u0
+              v(i,j,k,1)=v0
               u(i,j,k,2)=u(i,j,k,1)
               v(i,j,k,2)=v(i,j,k,1)
             enddo
@@ -429,9 +429,11 @@ C$    integer omp_get_thread_num
              ! winter conditions from Faycal
 !              include "fb_winter_temp_faycal.h"
              ! idealized winter temp
-              include "ideal_winter_temp.h"
+!              include "ideal_winter_temp.h"
              ! idealized summer temp
 !              include "ideal_summer_temp.h"
+             ! linear idealized winter temp
+              include "linear_ideal_winter_temp.h"
 
 !#   undef Z0
 !#   undef THKNSS
@@ -447,9 +449,13 @@ C$    integer omp_get_thread_num
              ! winter conditions from Faycal
 !              include "fb_winter_salt_faycal.h"
              ! idealized winter salt
-              include "ideal_winter_salt.h"
+!              include "ideal_winter_salt.h"
              ! idealized summer salt
 !              include "ideal_summer_salt.h"
+             ! linear idealized winter salt
+              include "linear_ideal_winter_salt.h"
+             ! linear idealized winter salt for higher buoyancy freq
+!              include "linear_ideal_winter_salt_high_N.h"
 #   endif
             enddo
           enddo

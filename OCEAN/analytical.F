@@ -1680,6 +1680,9 @@ C$    integer  trd, omp_get_thread_num
       integer is, k, Istr,Iend,Jstr,Jend, i,j
       real cff, cff1, cff2, ramp, Hs
       real    xno3,temp,SiO4,zsrc
+# ifdef PIPE
+      real eps
+# endif
 # include "compute_auxiliary_bounds.h" 
 
       if (iic.eq.ntstart) then
@@ -1792,8 +1795,11 @@ C$    integer  trd, omp_get_thread_num
       ERROR ###  is provided to set up Qbar(is) analytically.
 # endif
       do is=1,Nsrc
+        call random_number(eps)
+        eps = eps*1e-6
         do k=1,N
-          Qsrc(is,k)=Qbar(is)*Qshape(is,k)
+          Qsrc(is,k)=(Qbar(is)+eps)*Qshape(is,k)
+!          Qsrc(is,k)=Qbar(is)*Qshape(is,k)
         enddo
       enddo
 !
@@ -2077,7 +2083,7 @@ C$    integer  trd, omp_get_thread_num
 # endif
 # if defined PIPE
       real u0,v0
-      parameter (u0=0.2)
+      parameter (u0=0.3101367)
       parameter (v0=0.)
 # endif
 # include "param.h"

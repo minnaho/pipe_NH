@@ -83,7 +83,8 @@ C$    integer omp_get_thread_num
                      beta=2.E-11
 # elif defined PIPE
                      depth=60
-                     f0=1.E-4
+!                     f0=1.E-4
+                     f0=0
                      beta=0
 # elif defined CANYON_A || defined CANYON_B
                      depth=4000.
@@ -196,8 +197,8 @@ C$    integer omp_get_thread_num
                      Length_XI =3600.0e+3
                      Length_ETA=2800.0e+3
 # elif defined PIPE
-                     Length_XI =1536                  
-                     Length_ETA=1536                    
+                     Length_XI =3072.                  
+                     Length_ETA=1536.                   
 # elif defined CANYON_A || defined CANYON_B
                      Length_XI =128.0e+3
                      Length_ETA=96.0e+3

@@ -66,5 +66,5 @@
            t(i,j,62,1,itemp) = 14.560956988254569
            t(i,j,63,1,itemp) = 14.568601072164357
            t(i,j,64,1,itemp) = 14.575603678817156 ! surface
-           t(i,j,k,2,itemp)=t(i,j,k,1,isalt)
+           t(i,j,k,2,itemp)=t(i,j,k,1,itemp)
 

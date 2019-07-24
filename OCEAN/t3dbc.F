@@ -203,7 +203,8 @@ c        call t3dbc_interp_tile(Istr,Iend,Jstr,Jend,indx,itrc)
 !                            EASTERN BC
 !====================================================================
       if (EASTERN_EDGE) then
-#  if defined OBC_COM_EAST && defined OBC_COM_TORLANSKI
+!#  if defined OBC_COM_EAST && defined OBC_COM_TORLANSKI
+#  if defined OBC_COM_EAST && defined OBC_COM_TORLANSKI_EAST 
 !                                           Eastern edge radiation BC
 !                                           ======= ==== ========= ==
         do k=1,N
