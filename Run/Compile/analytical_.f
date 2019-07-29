@@ -16,7 +16,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -257,7 +257,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -507,7 +507,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -772,7 +772,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -1008,7 +1008,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -1258,7 +1258,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -1571,7 +1571,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
@@ -1638,7 +1638,7 @@
       implicit none
       integer*4 Istr,Iend,Jstr,Jend, i,j,k, itrc
       real u0,v0
-      parameter (u0=0.3101367D0)
+      parameter (u0=0.193998D0)
       parameter (v0=0.D0)
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
       parameter (LLm0=1024,  MMm0=512,  N=64)
@@ -1648,7 +1648,7 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT

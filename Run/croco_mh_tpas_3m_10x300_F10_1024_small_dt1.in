@@ -1,7 +1,7 @@
 title:
         PIPE TEST MODEL
 time_stepping: NTIMES   dt[sec]  NDTFAST  NINFO
-               7200       1       105        1
+               9000       1       105        1
 
 S-coord: THETA_S,   THETA_B,    Hc (m)
            0.0d0      0.0d0     1000.0d0
@@ -51,7 +51,7 @@ gamma2:
                  1.d0
 
 sponge:          X_SPONGE [m],    V_SPONGE [m^2/sec]
-                    100.             1.
+                    100.             0.1
 
 nudg_cof:    TauT_in, TauT_out, TauM_in, TauM_out  [days for all]
                 3.       360.      0.1      180.
