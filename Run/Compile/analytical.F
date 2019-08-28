@@ -2083,7 +2083,7 @@ C$    integer  trd, omp_get_thread_num
 # endif
 # if defined PIPE
       real u0,v0
-      parameter (u0=0.193998)
+      parameter (u0=0.668169)
       parameter (v0=0.)
 # endif
 # include "param.h"

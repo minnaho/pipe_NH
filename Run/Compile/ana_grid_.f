@@ -1,20 +1,20 @@
       subroutine ana_grid (tile)
       implicit none
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=512,  N=64)
+      parameter (LLm0=256,  MMm0=128,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=3000)
+      parameter (Msrc=270)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -76,20 +76,20 @@ C$    integer*4 omp_get_thread_num
       implicit none
       integer*4 Istr,Iend,Jstr,Jend, i,j,imax,jchn
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=512,  N=64)
+      parameter (LLm0=256,  MMm0=128,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=3000)
+      parameter (Msrc=270)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -304,8 +304,8 @@ C$    integer*4 omp_get_thread_num
                      depth=60
                      f0=0
                      beta=0
-                     Length_XI =3072.D0
-                     Length_ETA=1536.D0
+                     Length_XI =2560.D0
+                     Length_ETA=1280.D0
       xl=Length_XI
       el=Length_ETA
       dx=Length_XI/float(LLm)

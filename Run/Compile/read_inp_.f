@@ -1,19 +1,19 @@
       subroutine read_inp (ierr)
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=1024,  MMm0=512,  N=64)
+      parameter (LLm0=256,  MMm0=128,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=8,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=3000)
+      parameter (Msrc=270)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -639,20 +639,10 @@
       elseif (keyword(1:kwlen).eq.'psource') then
         call cancel_kwd (keyword(1:kwlen), ierr)
         read(input,*,err=95) Nsrc
-        if (mynode.eq.0) write(stdout,'(/6x,i6,2x,A,1x,A)')
-     &                               Nsrc, 'Number of point sources'
         do is=1,Nsrc
           read(input,*,err=95) Isrc(is), Jsrc(is), Dsrc(is), Qbar(is),
      &                                     (Lsrc(is,itrc), itrc=1,NT),
      &                                    (Tsrc0(is,itrc), itrc=1,NT)
-          if (mynode.eq.0) write(stdout,'(3(/6x,i6,2x,A))')
-     &    Isrc(is), 'I point source indice'
-     &  , Jsrc(is), 'J point source indice'
-     &  , Dsrc(is), 'Direction of point source flow'
-          if (mynode.eq.0) write(stdout,'(1pe10.3,2x,A)')
-     &    Qbar(is), 'Total transport at point source'
-          write(*,*)'Isrc(is)=',Isrc(is)
-          write(*,*)'Jsrc(is)=',Jsrc(is)
           if (iminmpi.LE.Isrc(is) .AND. Isrc(is).LE.imaxmpi .AND.
      &        jminmpi.LE.Jsrc(is) .AND. Jsrc(is).LE.jmaxmpi) then
            Isrc_mpi(is,mynode)=Isrc(is)-iminmpi+1
@@ -661,19 +651,6 @@
            Isrc_mpi(is,mynode)=-1
            Jsrc_mpi(is,mynode)=-1
           endif
-          do itrc=1,NT
-            if (mynode.eq.0) write(stdout,
-     &                     '(6x,L1,2x,A,I2,A,2x,A,I2,A)')
-     &                      Lsrc(is,itrc), 'write Lsrc(',
-     &                      itrc,')', 'Tracer of index', itrc,'.'
-          enddo
-          do itrc=1,NT
-            if (mynode.eq.0) write(stdout,
-     &                     '(6x,1pe10.3,2x,A,I2,A,2x,A,I2,A)')
-     &                      Tsrc0(is,itrc), 'write Tsrc(',
-     &                      itrc,')', 'Tracer of index', itrc,'.'
-          enddo
-        enddo
       else
         if (mynode.eq.0) write(stdout,'(/3(1x,A)/)')
      &                  'WARNING: Unrecognized keyword:',

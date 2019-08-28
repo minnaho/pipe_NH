@@ -1,7 +1,7 @@
 title:
         PIPE TEST MODEL
 time_stepping: NTIMES   dt[sec]  NDTFAST  NINFO
-               43200       2       105        1
+               42300       1       105        1
 
 S-coord: THETA_S,   THETA_B,    Hc (m)
            0.0d0      0.0d0     1000.0d0
@@ -12,7 +12,7 @@ restart:          NRST, NRPFRST
                   9999999    +2
 
 history: LDEFHIS, NWRT, NRPFHIS / filename 
-            T     450      24
+            T     900      24
                           /scratch/minnaho/croco_his.nc
 
 averages: NTSAVG, NAVG, NRPFAVG / filename
