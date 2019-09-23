@@ -31,7 +31,7 @@
 #if defined BASIN
       parameter (LLm0=60,   MMm0=50,   N=10)
 #elif defined PIPE
-      parameter (LLm0=256,  MMm0=128,  N=64)
+      parameter (LLm0=1024,  MMm0=512,  N=64)
 #elif defined CANYON_A
       parameter (LLm0=65,   MMm0=48,   N=16)
 #elif defined CANYON_B
@@ -266,7 +266,7 @@
 #endif
 #if defined PSOURCE || defined PSOURCE_NCFILE
       integer Msrc               ! Number of point sources
-      parameter (Msrc=270)       ! ====== == ===== =======
+      parameter (Msrc=3000)       ! ====== == ===== =======
 #endif
 #ifdef FLOATS
        integer Mfloats           ! Maximum number of floats

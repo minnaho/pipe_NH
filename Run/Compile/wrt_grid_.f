@@ -4,7 +4,7 @@
       integer*4 i, j, k, ncid, lstr, varid, ierr, nf_fwrite,
      &        nf_fwrite_x, nf_fwrite_y
       integer*4  LLm,Lm,MMm,Mm,N, LLm0,MMm0
-      parameter (LLm0=256,  MMm0=128,  N=64)
+      parameter (LLm0=1024,  MMm0=512,  N=64)
       parameter (LLm=LLm0,  MMm=MMm0)
       integer*4 Lmmpi,Mmmpi,iminmpi,imaxmpi,jminmpi,jmaxmpi
       common /comm_setup_mpi1/ Lmmpi,Mmmpi
@@ -17,7 +17,7 @@
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=270)
+      parameter (Msrc=3000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)

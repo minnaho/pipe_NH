@@ -652,7 +652,7 @@ c        close(testunit)
      &        'Float File:',fltname(1:lstr),  'Create new:',
      &        ldefflt, 'nflt =', nflt, 'rec/file =', nrpfflt
 #ifdef AGRIF
-        else
+        elseif
           ldefflt=Agrif_Parent(ldefflt)
           nflt=Agrif_Parent(nflt)
           nrpfflt=Agrif_Parent(nrpfflt)
@@ -2002,7 +2002,7 @@ CR        write(*,*)'NumGasExcTerms=',NumGasExcTerms
 !     &                      Tsrc0(is,itrc), 'write Tsrc(',
 !     &                      itrc,')', 'Tracer of index', itrc,'.'
 !          enddo
-!        enddo
+        enddo
 # endif   /*  define PSOURCE_NCFILE  */
 #endif /* ANA_PSOURCE */
 !
