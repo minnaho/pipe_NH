@@ -8,13 +8,13 @@
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=3000)
+      parameter (Msrc=18000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -82,13 +82,13 @@ C$    integer*4 omp_get_thread_num
       common /comm_setup_mpi2/ iminmpi,imaxmpi,jminmpi,jmaxmpi
       integer*4 NSUB_X, NSUB_E, NPP
       integer*4 NP_XI, NP_ETA, NNODES
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=3000)
+      parameter (Msrc=18000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -310,7 +310,7 @@ C$    integer*4 omp_get_thread_num
       parameter (mask_val = .true.)
       integer*4 Istr,Iend,Jstr,Jend, i,j,k, itrc
       real u0,v0
-      parameter (u0=0.14395D0)
+      parameter (u0=0.0668D0)
       parameter (v0=0.D0)
       integer*4 IstrR,IendR,JstrR,JendR
       integer*4 IstrU

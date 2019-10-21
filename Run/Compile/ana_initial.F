@@ -91,7 +91,7 @@ C$    integer omp_get_thread_num
 #endif
 #ifdef PIPE
       real u0,v0
-      parameter (u0=0.14395)
+      parameter (u0=0.0668)
       parameter (v0=0.)
 #endif
 !

@@ -206,7 +206,7 @@
       parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
 # else     
 !     parameter (NP_XI=1,  NP_ETA=1,  NNODES=NP_XI*NP_ETA)
-      parameter (NP_XI=16,  NP_ETA=8,  NNODES=NP_XI*NP_ETA)
+      parameter (NP_XI=16,  NP_ETA=16,  NNODES=NP_XI*NP_ETA)
 # endif
       parameter (NPP=1)
       parameter (NSUB_X=1, NSUB_E=1)
@@ -266,7 +266,7 @@
 #endif
 #if defined PSOURCE || defined PSOURCE_NCFILE
       integer Msrc               ! Number of point sources
-      parameter (Msrc=3000)       ! ====== == ===== =======
+      parameter (Msrc=18000)     ! ====== == ===== =======
 #endif
 #ifdef FLOATS
        integer Mfloats           ! Maximum number of floats
