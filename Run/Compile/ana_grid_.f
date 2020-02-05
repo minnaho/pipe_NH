@@ -14,7 +14,7 @@
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=18000)
+      parameter (Msrc=15000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -89,7 +89,7 @@ C$    integer*4 omp_get_thread_num
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=18000)
+      parameter (Msrc=15000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
@@ -304,8 +304,8 @@ C$    integer*4 omp_get_thread_num
                      depth=60
                      f0=0
                      beta=0
-                     Length_XI =3072.D0
-                     Length_ETA=1536.D0
+                     Length_XI =1024.D0
+                     Length_ETA=512.D0
       xl=Length_XI
       el=Length_ETA
       dx=Length_XI/float(LLm)

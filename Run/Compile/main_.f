@@ -17,7 +17,7 @@
       integer*4 NWEIGHT
       parameter (NWEIGHT=1000)
       integer*4 Msrc
-      parameter (Msrc=18000)
+      parameter (Msrc=15000)
       integer*4 stdout, Np, padd_X,padd_E
       parameter (stdout=6, Np=N+1)
       parameter (Lm=(LLm+NP_XI-1)/NP_XI, Mm=(MMm+NP_ETA-1)/NP_ETA)
